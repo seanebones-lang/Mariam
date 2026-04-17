@@ -2,7 +2,6 @@
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { MBBMonogram } from "./mbb-monogram";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -13,35 +12,73 @@ const HeroScene = dynamic(
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-[92vh] overflow-hidden bg-ink">
-      <div className="absolute inset-0 opacity-90">
+    <section className="relative min-h-[100svh] overflow-hidden bg-ink">
+      <div className="absolute inset-0">
         <HeroScene />
       </div>
-      <div className="scanlines" />
-      <div className="relative z-10 mx-auto flex min-h-[92vh] max-w-6xl flex-col justify-end px-4 pb-24 pt-32 md:px-6 md:pb-32">
-        <div className="max-w-2xl">
-          <MBBMonogram className="mb-6" />
-          <p className="font-serif text-xs uppercase tracking-[0.35em] text-blood">
+
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent via-ink/70 to-ink" />
+
+      <div className="relative z-10 mx-auto grid min-h-[100svh] max-w-6xl grid-rows-[auto_1fr_auto] px-5 pt-20 pb-10 sm:px-6 sm:pt-24 md:pt-28 md:pb-16">
+        <div className="flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.35em] text-bone/55 sm:text-[10px] sm:tracking-[0.4em]">
+          <span>NYC · Traveling</span>
+          <span className="hidden md:inline">
+            Private studio · By appointment
+          </span>
+          <span>Est. MMIV</span>
+        </div>
+
+        <div className="flex flex-col items-center justify-center text-center">
+          <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-blood sm:tracking-[0.5em]">
+            The artist
+          </p>
+
+          <h1
+            className="mt-3 whitespace-nowrap font-serif leading-[0.95] tracking-[-0.015em] text-bandage
+                       text-[clamp(1.85rem,8.25vw,6.5rem)]"
+          >
             Mari Belle Bones
-          </p>
-          <h1 className="mt-4 font-serif text-4xl leading-tight text-bandage md:text-6xl">
-            Dark art. Ritual ink.
           </h1>
-          <p className="mt-6 max-w-lg text-sm leading-relaxed text-bone/75 md:text-base">
-            Consultations and appointments with deposit via Square. Saniderm
-            aftercare guidance. Traveling guest spots — see tour dates.
+
+          <div className="mt-6 h-px w-16 bg-bone/25 sm:w-24" />
+
+          <p className="mt-6 font-serif text-base italic text-bone/70 sm:text-lg md:text-xl">
+            Ritual ink, drawn by hand.
           </p>
-          <div className="mt-10 flex flex-wrap gap-4">
-            <Link href="/book" className={cn(buttonVariants())}>
+
+          <p className="mt-5 max-w-sm px-2 text-[13px] leading-relaxed text-bone/65 sm:mt-7 sm:max-w-md sm:text-sm">
+            Custom dark work and flash by appointment. Deposits secured through
+            Square. Saniderm aftercare included.
+          </p>
+
+          <div className="mt-8 flex w-full flex-col items-stretch gap-3 sm:mt-10 sm:w-auto sm:flex-row sm:items-center sm:justify-center">
+            <Link
+              href="/book"
+              className={cn(
+                buttonVariants(),
+                "h-12 w-full sm:h-11 sm:w-auto sm:min-w-[180px]"
+              )}
+            >
               Book + deposit
             </Link>
             <Link
               href="/portfolio"
-              className={cn(buttonVariants({ variant: "ghost" }))}
+              className={cn(
+                buttonVariants({ variant: "ghost" }),
+                "h-12 w-full sm:h-11 sm:w-auto sm:min-w-[180px]"
+              )}
             >
               View work
             </Link>
           </div>
+        </div>
+
+        <div className="mt-8 flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.35em] text-bone/45 sm:text-[10px] sm:tracking-[0.4em]">
+          <span>Scroll</span>
+          <span className="hidden md:inline">
+            A single vessel, one session at a time
+          </span>
+          <span>01 / IV</span>
         </div>
       </div>
     </section>

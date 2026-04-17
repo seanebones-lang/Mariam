@@ -26,17 +26,19 @@ export function AftercareForm() {
   return (
     <form
       onSubmit={onSubmit}
-      className="space-y-4 border border-bone/10 bg-char p-6"
+      className="space-y-4 border border-bone/10 bg-char p-5 sm:p-6"
     >
       <div>
         <Label htmlFor="em">Email</Label>
         <Input
           id="em"
           type="email"
+          inputMode="email"
+          autoComplete="email"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="mt-1"
+          className="mt-2"
         />
       </div>
       <div>
@@ -47,13 +49,17 @@ export function AftercareForm() {
           required
           value={tattooDate}
           onChange={(e) => setTattooDate(e.target.value)}
-          className="mt-1"
+          className="mt-2"
         />
       </div>
-      <Button type="submit" disabled={loading}>
+      <Button type="submit" disabled={loading} className="w-full sm:w-auto">
         {loading ? "…" : "Start reminders"}
       </Button>
-      {msg ? <p className="text-sm text-bone/80">{msg}</p> : null}
+      {msg ? (
+        <p className="break-words text-sm leading-relaxed text-bone/80">
+          {msg}
+        </p>
+      ) : null}
     </form>
   );
 }

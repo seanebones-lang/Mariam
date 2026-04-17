@@ -4,7 +4,7 @@ import {
   verifyAdminSessionValue,
 } from "@/lib/admin-session";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   if (!request.nextUrl.pathname.startsWith("/admin")) {
     return NextResponse.next();
   }

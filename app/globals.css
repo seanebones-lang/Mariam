@@ -23,11 +23,38 @@
 
 html {
   color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+html,
+body {
+  overflow-x: hidden;
 }
 
 body {
   @apply bg-ink text-bone antialiased;
   font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Prevent iOS auto-zoom on focus: inputs must be >= 16px on touch viewports */
+@media (max-width: 767px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+img,
+video,
+svg {
+  max-width: 100%;
+  height: auto;
 }
 
 ::selection {
@@ -86,64 +113,3 @@ body {
   }
 }
 
-@keyframes mbb-word-in {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes mbb-L-in {
-  from {
-    opacity: 0;
-    filter: blur(4px);
-  }
-  to {
-    opacity: 1;
-    filter: blur(0);
-  }
-}
-
-@keyframes mbb-foot-in {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.mbb-word {
-  animation: mbb-word-in 0.95s cubic-bezier(0.2, 0.85, 0.2, 1) both;
-}
-
-.mbb-L {
-  animation: mbb-L-in 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
-  animation-delay: var(--delay, 0ms);
-}
-
-.mbb-word-foot,
-.mbb-rule-foot {
-  animation: mbb-foot-in 0.7s ease-out 0.45s both;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .mbb-word,
-  .mbb-L,
-  .mbb-word-foot,
-  .mbb-rule-foot {
-    animation: none !important;
-    filter: none !important;
-    opacity: 1 !important;
-  }
-
-  .mbb-word {
-    transform: none !important;
-  }
-}

@@ -15,20 +15,24 @@ export default async function FlashDetailPage({ params }: Props) {
   const piece = await getFlashById(id);
   if (!piece) notFound();
   return (
-    <div className="mx-auto max-w-4xl px-4 py-16 md:px-6">
-      <div className="grid gap-10 md:grid-cols-2">
+    <div className="mx-auto max-w-4xl px-5 py-10 sm:px-6 sm:py-16">
+      <div className="grid gap-8 md:grid-cols-2 md:gap-10">
         <div
           className="aspect-square border border-bone/10 bg-cover bg-center"
           style={{ backgroundImage: `url(${piece.imageUrl})` }}
         />
         <div>
-          <h1 className="font-display text-4xl text-bandage">{piece.title}</h1>
+          <h1 className="font-serif text-3xl leading-tight text-bandage sm:text-4xl md:text-5xl">
+            {piece.title}
+          </h1>
           {piece.description ? (
-            <p className="mt-4 text-sm text-bone/80">{piece.description}</p>
+            <p className="mt-4 text-sm leading-relaxed text-bone/80">
+              {piece.description}
+            </p>
           ) : null}
-          <p className="mt-6 font-serif text-2xl text-blood">
+          <p className="mt-6 font-serif text-2xl text-blood sm:text-3xl">
             ${(piece.priceCents / 100).toFixed(0)}
-            <span className="ml-2 text-sm font-sans font-normal text-muted">
+            <span className="ml-2 text-xs font-sans font-normal text-muted sm:text-sm">
               + studio deposit via Square
             </span>
           </p>

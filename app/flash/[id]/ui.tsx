@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+
 export function FlashClaim({
   flashId,
   title,
@@ -26,7 +27,8 @@ export function FlashClaim({
       });
       const data = (await res.json()) as { ok?: boolean; error?: string };
       if (!res.ok) setMsg(data.error ?? "Request failed");
-      else setMsg("Hold placed for 15 minutes. Complete Square deposit when live.");
+      else
+        setMsg("Hold placed for 15 minutes. Complete Square deposit when live.");
     } catch {
       setMsg("Network error");
     } finally {
@@ -41,17 +43,18 @@ export function FlashClaim({
   const showSquareNote = !squareReady;
 
   return (
-    <div className="mt-10 space-y-4 border border-bone/10 bg-ink/40 p-6">
-      <p className="text-xs uppercase tracking-widest text-blood">
+    <div className="mt-8 space-y-4 border border-bone/10 bg-ink/40 p-5 sm:mt-10 sm:p-6">
+      <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-blood sm:text-xs">
         Claim — {title}
       </p>
       <div>
         <Label htmlFor="nm">Name</Label>
         <Input
           id="nm"
+          autoComplete="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="mt-1"
+          className="mt-2"
         />
       </div>
       <div>
@@ -59,18 +62,25 @@ export function FlashClaim({
         <Input
           id="em"
           type="email"
+          inputMode="email"
+          autoComplete="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="mt-1"
+          className="mt-2"
         />
       </div>
       {showSquareNote ? (
-        <p className="text-xs text-muted">
+        <p className="text-xs leading-relaxed text-muted">
           Square sandbox keys are placeholders — claim API still records intent
           when database is configured.
         </p>
       ) : null}
-      <Button type="button" disabled={loading} onClick={() => void claim()}>
+      <Button
+        type="button"
+        disabled={loading}
+        onClick={() => void claim()}
+        className="w-full sm:w-auto"
+      >
         {loading ? "Sealing…" : "Place 15-min hold"}
       </Button>
       {msg ? <p className="text-sm text-bone/80">{msg}</p> : null}

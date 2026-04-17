@@ -41,6 +41,18 @@ export const metadata: Metadata = {
     description: "Dark art. Ritual ink. Book + deposit on-site.",
     type: "website",
   },
+  formatDetection: {
+    telephone: false,
+    email: false,
+    address: false,
+  },
+};
+
+export const viewport: import("next").Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#060606",
 };
 
 export default function RootLayout({

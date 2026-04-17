@@ -5,15 +5,20 @@ export const metadata = { title: "Aftercare" };
 
 export default function AftercarePage() {
   return (
-    <div className="mx-auto max-w-3xl px-4 py-16 md:px-6">
-      <h1 className="font-serif text-4xl text-bandage">Saniderm aftercare</h1>
-      <p className="mt-4 text-sm text-bone/80">
+    <div className="mx-auto max-w-3xl px-5 py-12 sm:px-6 sm:py-16">
+      <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-blood sm:text-xs sm:tracking-[0.4em]">
+        Healing
+      </p>
+      <h1 className="mt-3 font-serif text-3xl leading-tight text-bandage sm:text-4xl md:text-5xl">
+        Saniderm aftercare
+      </h1>
+      <p className="mt-4 text-sm leading-relaxed text-bone/80">
         Saniderm (or similar transparent film) keeps a fresh tattoo sealed from
         friction and airborne grit while still allowing oxygen exchange. Follow
         your artist&apos;s specific instructions first — this page is a general
         guide only.
       </p>
-      <ul className="mt-8 list-disc space-y-3 pl-5 text-sm text-bone/85">
+      <ul className="mt-8 list-disc space-y-3 pl-5 text-sm leading-relaxed text-bone/85">
         <li>Wash hands before touching the film or tattoo.</li>
         <li>
           If fluid builds excessively under the film, or edges peel and expose
@@ -22,18 +27,23 @@ export default function AftercarePage() {
         <li>After removal: gentle wash, pat dry, thin balm if advised.</li>
         <li>No sun, no soaking, no picking.</li>
       </ul>
-      <h2 className="mt-14 font-serif text-2xl text-blood">Email timeline</h2>
-      <p className="mt-3 text-sm text-muted">
-        Sign up for day 0 / 1 / 3 / 7 / 14 / 30 reminders (cron on Vercel + Resend
-        when configured).
+      <h2 className="mt-12 font-serif text-2xl leading-tight text-blood sm:mt-14 sm:text-3xl">
+        Email timeline
+      </h2>
+      <p className="mt-3 text-sm leading-relaxed text-muted">
+        Sign up for day 0 / 1 / 3 / 7 / 14 / 30 reminders (cron on Vercel +
+        Resend when configured).
       </p>
       <div className="mt-6">
         <AftercareForm />
       </div>
-      <p className="mt-10 text-xs text-muted">
+      <p className="mt-10 text-xs leading-relaxed text-muted">
         Not medical advice. Redness spreading with fever — seek urgent care.
       </p>
-      <Link href="/faq" className="mt-6 inline-block text-sm text-blood underline">
+      <Link
+        href="/faq"
+        className="mt-6 inline-block text-sm text-blood underline"
+      >
         Studio policies
       </Link>
     </div>

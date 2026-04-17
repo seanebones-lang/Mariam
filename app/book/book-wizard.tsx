@@ -8,6 +8,7 @@ import { createBooking } from "@/app/actions/booking";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 
 const schema = z
   .object({
@@ -26,6 +27,8 @@ const schema = z
   });
 
 type Form = z.infer<typeof schema>;
+
+const STEPS = ["Contact", "Details", "Consent"] as const;
 
 export function BookWizard() {
   const [step, setStep] = useState(0);
@@ -46,124 +49,206 @@ export function BookWizard() {
 
   if (resultId) {
     return (
-      <div className="border border-bone/10 bg-char p-8 text-center">
-        <p className="font-display text-2xl text-bandage">Marked in the book</p>
+      <div className="border border-bone/10 bg-char p-6 text-center sm:p-8">
+        <p className="font-serif text-2xl text-bandage sm:text-3xl">
+          Marked in the book
+        </p>
         <p className="mt-4 text-sm text-bone/80">
-          Reference <span className="text-blood">{resultId}</span>. Square deposit
-          step activates when sandbox keys are set — you will receive email from
-          Resend once DNS is ready.
+          Reference <span className="text-blood">{resultId}</span>. Square
+          deposit step activates when sandbox keys are set — you will receive
+          email from Resend once DNS is ready.
         </p>
       </div>
     );
   }
 
+  const kind = form.watch("kind");
+
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
-      className="space-y-10 border border-bone/10 bg-char p-6 md:p-10"
+      className="border border-bone/10 bg-char"
     >
-      {step === 0 ? (
-        <div className="space-y-6">
-          <div>
-            <Label>Rite</Label>
-            <div className="mt-2 flex gap-4">
-              {(["consultation", "tattoo"] as const).map((k) => (
-                <label key={k} className="flex items-center gap-2 text-sm">
-                  <input type="radio" value={k} {...form.register("kind")} />
-                  {k}
-                </label>
-              ))}
+      {/* Stepper */}
+      <ol className="flex border-b border-bone/10">
+        {STEPS.map((label, i) => (
+          <li
+            key={label}
+            className={cn(
+              "flex-1 border-r border-bone/10 px-3 py-3 text-center text-[10px] uppercase tracking-[0.25em] last:border-r-0 sm:text-[11px] sm:tracking-[0.3em]",
+              i === step
+                ? "bg-ink/60 text-blood"
+                : i < step
+                  ? "text-bone/75"
+                  : "text-bone/35"
+            )}
+            aria-current={i === step ? "step" : undefined}
+          >
+            <span className="mr-1 font-mono">{String(i + 1).padStart(2, "0")}</span>
+            {label}
+          </li>
+        ))}
+      </ol>
+
+      <div className="p-5 sm:p-8">
+        {step === 0 ? (
+          <div className="space-y-6">
+            <div>
+              <Label>Rite</Label>
+              <div className="mt-3 grid grid-cols-2 gap-2">
+                {(["consultation", "tattoo"] as const).map((k) => (
+                  <label
+                    key={k}
+                    className={cn(
+                      "flex cursor-pointer items-center justify-center border px-3 py-3 text-sm capitalize transition",
+                      kind === k
+                        ? "border-blood bg-blood/10 text-bandage"
+                        : "border-bone/20 bg-ink/30 text-bone/75 hover:border-bone/50"
+                    )}
+                  >
+                    <input
+                      type="radio"
+                      value={k}
+                      className="sr-only"
+                      {...form.register("kind")}
+                    />
+                    {k}
+                  </label>
+                ))}
+              </div>
+            </div>
+            <div>
+              <Label htmlFor="clientName">Name</Label>
+              <Input
+                id="clientName"
+                className="mt-2"
+                autoComplete="name"
+                {...form.register("clientName")}
+              />
+            </div>
+            <div>
+              <Label htmlFor="clientEmail">Email</Label>
+              <Input
+                id="clientEmail"
+                type="email"
+                inputMode="email"
+                autoComplete="email"
+                className="mt-2"
+                {...form.register("clientEmail")}
+              />
+            </div>
+            <div>
+              <Label htmlFor="clientPhone">Phone (optional)</Label>
+              <Input
+                id="clientPhone"
+                type="tel"
+                inputMode="tel"
+                autoComplete="tel"
+                className="mt-2"
+                {...form.register("clientPhone")}
+              />
             </div>
           </div>
-          <div>
-            <Label htmlFor="clientName">Name</Label>
-            <Input id="clientName" className="mt-1" {...form.register("clientName")} />
-          </div>
-          <div>
-            <Label htmlFor="clientEmail">Email</Label>
-            <Input
-              id="clientEmail"
-              type="email"
-              className="mt-1"
-              {...form.register("clientEmail")}
-            />
-          </div>
-          <div>
-            <Label htmlFor="clientPhone">Phone (optional)</Label>
-            <Input id="clientPhone" className="mt-1" {...form.register("clientPhone")} />
-          </div>
-          <Button type="button" onClick={() => setStep(1)}>
-            Next
-          </Button>
-        </div>
-      ) : null}
+        ) : null}
 
-      {step === 1 ? (
-        <div className="space-y-6">
-          <div>
-            <Label htmlFor="scheduledAt">Preferred date / time</Label>
-            <Input
-              id="scheduledAt"
-              type="datetime-local"
-              className="mt-1"
-              {...form.register("scheduledAt")}
-            />
+        {step === 1 ? (
+          <div className="space-y-6">
+            <div>
+              <Label htmlFor="scheduledAt">Preferred date / time</Label>
+              <Input
+                id="scheduledAt"
+                type="datetime-local"
+                className="mt-2"
+                {...form.register("scheduledAt")}
+              />
+            </div>
+            <div>
+              <Label htmlFor="notes">Placement, size, references</Label>
+              <textarea
+                id="notes"
+                rows={5}
+                className="mt-2 w-full border border-bone/20 bg-char px-3 py-3 text-base text-bone placeholder:text-muted focus-visible:border-blood focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blood sm:text-sm"
+                placeholder="Describe the idea, size in inches, placement, any reference notes."
+                {...form.register("notes")}
+              />
+            </div>
           </div>
-          <div>
-            <Label htmlFor="notes">Placement, size, references</Label>
-            <textarea
-              id="notes"
-              rows={4}
-              className="mt-1 w-full border border-bone/20 bg-char px-3 py-2 text-sm text-bone"
-              {...form.register("notes")}
-            />
+        ) : null}
+
+        {step === 2 ? (
+          <div className="space-y-6">
+            <p className="text-sm leading-relaxed text-bone/80">
+              Digital consent: you confirm you are eighteen or older and accept
+              studio policies linked from /faq.
+            </p>
+            <div>
+              <Label htmlFor="consentName">Sign full legal name</Label>
+              <Input
+                id="consentName"
+                autoComplete="name"
+                className="mt-2"
+                {...form.register("consentName")}
+              />
+            </div>
+            <label className="flex items-start gap-3 text-sm leading-relaxed text-bone/85">
+              <input
+                type="checkbox"
+                {...form.register("consentAck", {
+                  setValueAs: (v) => v === true || v === "on",
+                })}
+                className="mt-1 h-5 w-5 accent-blood"
+              />
+              <span>
+                I agree to the consent terms and understand deposit is
+                non-refundable per policy.
+              </span>
+            </label>
+            <div className="rounded-sm border border-blood/30 bg-ink/50 p-4 text-xs leading-relaxed text-muted">
+              Square Web Payments SDK mounts here when{" "}
+              <code className="text-bone">
+                NEXT_PUBLIC_SQUARE_APPLICATION_ID
+              </code>{" "}
+              and server tokens are configured. Until then, submitting saves
+              the booking row only.
+            </div>
           </div>
-          <div className="flex gap-4">
-            <Button type="button" variant="ghost" onClick={() => setStep(0)}>
+        ) : null}
+      </div>
+
+      {/* Sticky action bar on mobile */}
+      <div className="sticky bottom-0 z-10 border-t border-bone/10 bg-char/95 p-4 backdrop-blur sm:static sm:bg-char sm:backdrop-blur-0 sm:p-5">
+        <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
+          {step > 0 ? (
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => setStep(step - 1)}
+              className="w-full sm:w-auto"
+            >
               Back
             </Button>
-            <Button type="button" onClick={() => setStep(2)}>
-              Next
+          ) : (
+            <span className="hidden sm:block" />
+          )}
+          {step < 2 ? (
+            <Button
+              type="button"
+              onClick={() => setStep(step + 1)}
+              className="w-full sm:w-auto sm:min-w-[180px]"
+            >
+              Continue
             </Button>
-          </div>
-        </div>
-      ) : null}
-
-      {step === 2 ? (
-        <div className="space-y-6">
-          <p className="text-sm text-bone/80">
-            Digital consent: you confirm you are eighteen or older and accept
-            studio policies linked from /faq.
-          </p>
-          <div>
-            <Label htmlFor="consentName">Sign full legal name</Label>
-            <Input id="consentName" className="mt-1" {...form.register("consentName")} />
-          </div>
-          <label className="flex items-start gap-2 text-sm text-bone/85">
-            <input
-              type="checkbox"
-              {...form.register("consentAck", {
-                setValueAs: (v) => v === true || v === "on",
-              })}
-              className="mt-1"
-            />
-            I agree to the consent terms and understand deposit is non-refundable
-            per policy.
-          </label>
-          <div className="rounded-sm border border-blood/30 bg-ink/50 p-4 text-xs text-muted">
-            Square Web Payments SDK mounts here when{" "}
-            <code className="text-bone">NEXT_PUBLIC_SQUARE_APPLICATION_ID</code>{" "}
-            and server tokens are configured. Until then, submitting saves the
-            booking row only.
-          </div>
-          <div className="flex gap-4">
-            <Button type="button" variant="ghost" onClick={() => setStep(1)}>
-              Back
+          ) : (
+            <Button
+              type="submit"
+              className="w-full sm:w-auto sm:min-w-[180px]"
+              disabled={form.formState.isSubmitting}
+            >
+              {form.formState.isSubmitting ? "Submitting…" : "Submit booking"}
             </Button>
-            <Button type="submit">Submit booking</Button>
-          </div>
+          )}
         </div>
-      ) : null}
+      </div>
     </form>
   );
 }

@@ -12,7 +12,7 @@ export default async function AftercareTrackPage({ params }: Props) {
   const db = getDb();
   if (!db) {
     return (
-      <div className="mx-auto max-w-xl px-4 py-16 text-sm text-muted">
+      <div className="mx-auto max-w-xl px-5 py-12 text-sm text-muted sm:px-6 sm:py-16">
         Database not configured — cannot load tracker.
       </div>
     );
@@ -31,10 +31,15 @@ export default async function AftercareTrackPage({ params }: Props) {
   );
 
   return (
-    <div className="mx-auto max-w-xl px-4 py-16 md:px-6">
-      <h1 className="font-serif text-3xl text-bandage">Healing timeline</h1>
-      <p className="mt-2 text-sm text-muted">Private link — do not share.</p>
-      <p className="mt-6 text-sm text-bone/85">
+    <div className="mx-auto max-w-xl px-5 py-12 sm:px-6 sm:py-16">
+      <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-blood sm:text-xs sm:tracking-[0.4em]">
+        Private link
+      </p>
+      <h1 className="mt-3 font-serif text-3xl leading-tight text-bandage sm:text-4xl">
+        Healing timeline
+      </h1>
+      <p className="mt-2 text-sm text-muted">Do not share.</p>
+      <p className="mt-6 text-sm leading-relaxed text-bone/85">
         Tattoo date:{" "}
         <span className="text-blood">
           {start.toLocaleDateString(undefined, {
@@ -43,18 +48,20 @@ export default async function AftercareTrackPage({ params }: Props) {
             day: "numeric",
           })}
         </span>
-        . Today is day <strong>{Math.max(0, diffDays)}</strong> relative to that
-        date.
+        . Today is day <strong>{Math.max(0, diffDays)}</strong> relative to
+        that date.
       </p>
       <ul className="mt-8 space-y-3 text-sm">
         {DAYS.map((d) => (
           <li
             key={d}
-            className={`border border-bone/10 px-3 py-2 ${
+            className={`border border-bone/10 px-4 py-3 leading-relaxed ${
               diffDays >= d ? "border-blood/40 text-bone" : "text-muted"
             }`}
           >
-            Day {d}:{" "}
+            <span className="mr-2 font-mono text-xs text-blood">
+              Day {String(d).padStart(2, "0")}
+            </span>
             {d === 0
               ? "Film on, gentle day."
               : d === 1

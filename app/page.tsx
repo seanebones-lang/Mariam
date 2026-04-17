@@ -17,27 +17,28 @@ export default async function HomePage() {
   return (
     <>
       <HeroSection />
-      <section className="border-t border-bone/10 bg-char py-20">
-        <div className="mx-auto max-w-6xl px-4 md:px-6">
-          <p className="font-serif text-xs uppercase tracking-[0.3em] text-blood">
+
+      <section className="border-t border-bone/10 bg-char py-14 sm:py-20">
+        <div className="mx-auto max-w-6xl px-5 sm:px-6">
+          <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-blood sm:text-xs sm:tracking-[0.4em]">
             Flash
           </p>
-          <h2 className="mt-3 font-serif text-3xl text-bandage md:text-4xl">
+          <h2 className="mt-3 font-serif text-3xl leading-tight text-bandage sm:text-4xl md:text-5xl">
             Claim the mark
           </h2>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid gap-4 sm:mt-10 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
             {flash.map((f) => (
               <Link
                 key={f.id}
                 href={`/flash/${f.id}`}
-                className="group border border-bone/10 bg-ink/40 transition hover:border-blood/40"
+                className="group border border-bone/10 bg-ink/40 transition hover:border-blood/40 active:border-blood/40"
               >
                 <div
                   className="aspect-square bg-cover bg-center"
                   style={{ backgroundImage: `url(${f.imageUrl})` }}
                 />
-                <div className="p-4">
-                  <p className="font-display text-xl text-bandage group-hover:text-blood">
+                <div className="p-4 sm:p-5">
+                  <p className="font-serif text-xl text-bandage group-hover:text-blood sm:text-2xl">
                     {f.title}
                   </p>
                   <p className="mt-1 text-sm text-muted">
@@ -47,27 +48,33 @@ export default async function HomePage() {
               </Link>
             ))}
           </div>
-          <div className="mt-10">
-            <Link href="/flash" className={cn(buttonVariants({ variant: "ghost" }))}>
+          <div className="mt-8 sm:mt-10">
+            <Link
+              href="/flash"
+              className={cn(
+                buttonVariants({ variant: "ghost" }),
+                "w-full sm:w-auto"
+              )}
+            >
               All flash
             </Link>
           </div>
         </div>
       </section>
 
-      <section className="border-t border-bone/10 bg-ink py-20">
-        <div className="mx-auto max-w-6xl px-4 md:px-6">
-          <p className="font-serif text-xs uppercase tracking-[0.3em] text-blood">
+      <section className="border-t border-bone/10 bg-ink py-14 sm:py-20">
+        <div className="mx-auto max-w-6xl px-5 sm:px-6">
+          <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-blood sm:text-xs sm:tracking-[0.4em]">
             Portfolio
           </p>
-          <h2 className="mt-3 font-serif text-3xl text-bandage md:text-4xl">
-            From the veil
+          <h2 className="mt-3 font-serif text-3xl leading-tight text-bandage sm:text-4xl md:text-5xl">
+            Recent work
           </h2>
-          <p className="mt-4 max-w-xl text-sm text-bone/75">
+          <p className="mt-4 max-w-xl text-[13px] leading-relaxed text-bone/70 sm:text-sm">
             Pulled from @maribellebones when Instagram Graph API keys are set;
             otherwise seeded previews.
           </p>
-          <div className="mt-10 grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-3">
+          <div className="mt-8 grid grid-cols-2 gap-1.5 sm:mt-10 sm:gap-2 md:grid-cols-4 md:gap-3">
             {tiles.map((item) => (
               <a
                 key={item.id}
@@ -91,10 +98,13 @@ export default async function HomePage() {
               </a>
             ))}
           </div>
-          <div className="mt-10">
+          <div className="mt-8 sm:mt-10">
             <Link
               href="/portfolio"
-              className={cn(buttonVariants({ variant: "outline" }))}
+              className={cn(
+                buttonVariants({ variant: "outline" }),
+                "w-full sm:w-auto"
+              )}
             >
               Full portfolio
             </Link>
@@ -102,15 +112,15 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="border-t border-bone/10 bg-char py-20">
-        <div className="mx-auto max-w-6xl px-4 md:px-6">
-          <p className="font-serif text-xs uppercase tracking-[0.3em] text-blood">
+      <section className="border-t border-bone/10 bg-char py-14 sm:py-20">
+        <div className="mx-auto max-w-6xl px-5 sm:px-6">
+          <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-blood sm:text-xs sm:tracking-[0.4em]">
             Tour
           </p>
-          <h2 className="mt-3 font-serif text-3xl text-bandage md:text-4xl">
+          <h2 className="mt-3 font-serif text-3xl leading-tight text-bandage sm:text-4xl md:text-5xl">
             Guest rites
           </h2>
-          <ul className="mt-8 space-y-4">
+          <ul className="mt-8 space-y-3 sm:space-y-4">
             {tours.length === 0 ? (
               <li className="text-sm text-muted">
                 Tour dates appear here once added in admin or database.
@@ -119,15 +129,17 @@ export default async function HomePage() {
               tours.map((t) => (
                 <li
                   key={t.id}
-                  className="flex flex-col border border-bone/10 bg-ink/30 px-4 py-4 md:flex-row md:items-center md:justify-between"
+                  className="flex flex-col gap-2 border border-bone/10 bg-ink/30 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6"
                 >
                   <div>
-                    <p className="font-serif text-lg text-bandage">{t.city}</p>
+                    <p className="font-serif text-lg text-bandage sm:text-xl">
+                      {t.city}
+                    </p>
                     {t.venue ? (
                       <p className="text-sm text-muted">{t.venue}</p>
                     ) : null}
                   </div>
-                  <p className="mt-2 text-sm text-bone/80 md:mt-0">
+                  <p className="text-sm text-bone/80">
                     {new Date(t.startsOn).toLocaleDateString(undefined, {
                       month: "short",
                       day: "numeric",
@@ -144,26 +156,32 @@ export default async function HomePage() {
               ))
             )}
           </ul>
-          <div className="mt-10">
-            <Link href="/tour" className={cn(buttonVariants())}>
+          <div className="mt-8 sm:mt-10">
+            <Link
+              href="/tour"
+              className={cn(buttonVariants(), "w-full sm:w-auto")}
+            >
               Tour + booking links
             </Link>
           </div>
         </div>
       </section>
 
-      <section className="border-t border-bone/10 bg-ink py-20">
-        <div className="mx-auto max-w-6xl px-4 text-center md:px-6">
-          <h2 className="font-serif text-3xl text-bandage md:text-4xl">
+      <section className="border-t border-bone/10 bg-ink py-14 sm:py-20">
+        <div className="mx-auto max-w-6xl px-5 text-center sm:px-6">
+          <h2 className="font-serif text-3xl leading-tight text-bandage sm:text-4xl md:text-5xl">
             Ready when you are
           </h2>
-          <p className="mx-auto mt-4 max-w-lg text-sm text-bone/75">
+          <p className="mx-auto mt-4 max-w-lg text-[13px] leading-relaxed text-bone/70 sm:text-sm">
             Consultation or full session — intake, references, digital consent,
             and Square deposit in one flow.
           </p>
           <Link
             href="/book"
-            className={cn(buttonVariants({ size: "lg" }), "mt-10 inline-flex")}
+            className={cn(
+              buttonVariants({ size: "lg" }),
+              "mt-8 inline-flex w-full sm:mt-10 sm:w-auto"
+            )}
           >
             Begin booking
           </Link>

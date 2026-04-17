@@ -16,9 +16,14 @@ export default async function AdminLoginPage({ searchParams }: Props) {
         ? "Set ADMIN_PASSWORD or ADMIN_SESSION_SECRET in .env.local"
         : null;
   return (
-    <div className="mx-auto flex min-h-[60vh] max-w-sm flex-col justify-center px-4 py-16">
-      <h1 className="font-display text-3xl text-bandage">Admin</h1>
-      <p className="mt-3 text-xs text-muted">
+    <div className="mx-auto flex min-h-[60vh] max-w-sm flex-col justify-center px-5 py-12 sm:px-6 sm:py-16">
+      <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-blood sm:text-xs sm:tracking-[0.4em]">
+        Studio
+      </p>
+      <h1 className="mt-3 font-serif text-3xl leading-tight text-bandage sm:text-4xl">
+        Admin
+      </h1>
+      <p className="mt-3 text-xs leading-relaxed text-muted">
         Set <code className="text-bone">ADMIN_PASSWORD</code> and optionally{" "}
         <code className="text-bone">ADMIN_SESSION_SECRET</code> in{" "}
         <code className="text-bone">.env.local</code>.
@@ -33,11 +38,13 @@ export default async function AdminLoginPage({ searchParams }: Props) {
             name="password"
             type="password"
             required
-            className="mt-1"
+            className="mt-2"
             autoComplete="current-password"
           />
         </div>
-        <Button type="submit">Enter</Button>
+        <Button type="submit" className="w-full sm:w-auto">
+          Enter
+        </Button>
       </form>
     </div>
   );

@@ -20,13 +20,22 @@ export default function FaqPage() {
     },
   ];
   return (
-    <div className="mx-auto max-w-3xl px-4 py-16 md:px-6">
-      <h1 className="font-serif text-4xl text-bandage">FAQ & policies</h1>
-      <dl className="mt-10 space-y-8">
+    <div className="mx-auto max-w-3xl px-5 py-12 sm:px-6 sm:py-16">
+      <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-blood sm:text-xs sm:tracking-[0.4em]">
+        Reference
+      </p>
+      <h1 className="mt-3 font-serif text-3xl leading-tight text-bandage sm:text-4xl md:text-5xl">
+        FAQ &amp; policies
+      </h1>
+      <dl className="mt-10 divide-y divide-bone/10 border-y border-bone/10">
         {items.map((it) => (
-          <div key={it.q}>
-            <dt className="font-serif text-lg text-blood">{it.q}</dt>
-            <dd className="mt-2 text-sm text-bone/85">{it.a}</dd>
+          <div key={it.q} className="py-6 sm:py-8">
+            <dt className="font-serif text-lg text-blood sm:text-xl">
+              {it.q}
+            </dt>
+            <dd className="mt-2 text-sm leading-relaxed text-bone/85">
+              {it.a}
+            </dd>
           </div>
         ))}
       </dl>
