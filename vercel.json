@@ -1,0 +1,12 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/aftercare",
+      "schedule": "0 10 * * *"
+    },
+    {
+      "path": "/api/cron/flash-holds",
+      "schedule": "15 * * * *"
+    }
+  ]
+}
