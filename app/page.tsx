@@ -101,7 +101,8 @@ export default async function HomePage() {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={item.url}
-                    alt=""
+                    alt={item.alt}
+                    loading="lazy"
                     className="h-full w-full object-cover transition hover:scale-105"
                   />
                 ) : null}
