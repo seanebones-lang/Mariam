@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -8,74 +9,88 @@ import { createBooking } from "@/app/actions/booking";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Spinner } from "@/components/ui/spinner";
+import { FieldError } from "@/components/ui/field-error";
+import { useToast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
 
 const schema = z
   .object({
     kind: z.enum(["consultation", "tattoo"]),
-    clientName: z.string().min(2),
-    clientEmail: z.string().email(),
+    clientName: z.string().min(2, "Please enter your full name."),
+    clientEmail: z.string().email("Enter a valid email address."),
     clientPhone: z.string().optional(),
     scheduledAt: z.string().optional(),
     notes: z.string().optional(),
-    consentName: z.string().min(2),
+    consentName: z.string().min(2, "Sign your full legal name to continue."),
     consentAck: z.boolean(),
   })
   .refine((v) => v.consentAck, {
     path: ["consentAck"],
-    message: "Consent required",
+    message: "You must agree to the consent terms.",
   });
 
 type Form = z.infer<typeof schema>;
 
-const STEPS = ["Contact", "Details", "Consent"] as const;
+const STEPS = ["Contact", "Details", "Consent", "Review"] as const;
+
+const STEP_FIELDS: Array<Array<keyof Form>> = [
+  ["kind", "clientName", "clientEmail", "clientPhone"],
+  ["scheduledAt", "notes"],
+  ["consentName", "consentAck"],
+  [],
+];
 
 export function BookWizard() {
+  const router = useRouter();
+  const toast = useToast();
   const [step, setStep] = useState(0);
-  const [resultId, setResultId] = useState<string | null>(null);
   const form = useForm<Form>({
     resolver: zodResolver(schema),
+    mode: "onTouched",
     defaultValues: {
       kind: "tattoo",
       consentAck: false,
     },
   });
 
-  async function onSubmit(values: Form) {
-    const r = await createBooking(values);
-    if (r.ok) setResultId(r.bookingId);
-    else alert(r.error);
+  const errors = form.formState.errors;
+
+  async function next() {
+    const fields = STEP_FIELDS[step];
+    const ok = await form.trigger(fields);
+    if (!ok) {
+      toast.error("Fix the highlighted fields before continuing.");
+      return;
+    }
+    setStep((s) => Math.min(s + 1, STEPS.length - 1));
   }
 
-  if (resultId) {
-    return (
-      <div className="border border-bone/10 bg-char p-6 text-center sm:p-8">
-        <p className="font-serif text-2xl text-bandage sm:text-3xl">
-          Marked in the book
-        </p>
-        <p className="mt-4 text-sm text-bone/80">
-          Reference <span className="text-blood">{resultId}</span>. Square
-          deposit step activates when sandbox keys are set — you will receive
-          email from Resend once DNS is ready.
-        </p>
-      </div>
-    );
+  async function onSubmit(values: Form) {
+    const r = await createBooking(values);
+    if (r.ok) {
+      toast.success("Booking marked. Check your email for next steps.", "Reserved");
+      router.push(`/book/success?ref=${encodeURIComponent(r.bookingId)}`);
+    } else {
+      toast.error(r.error ?? "Could not save booking. Please try again.");
+    }
   }
 
   const kind = form.watch("kind");
+  const values = form.watch();
 
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
       className="border border-bone/10 bg-char"
+      noValidate
     >
-      {/* Stepper */}
       <ol className="flex border-b border-bone/10">
         {STEPS.map((label, i) => (
           <li
             key={label}
             className={cn(
-              "flex-1 border-r border-bone/10 px-3 py-3 text-center text-[10px] uppercase tracking-[0.25em] last:border-r-0 sm:text-[11px] sm:tracking-[0.3em]",
+              "flex-1 border-r border-bone/10 px-2 py-3 text-center text-[10px] uppercase tracking-[0.2em] last:border-r-0 sm:px-3 sm:text-[11px] sm:tracking-[0.3em]",
               i === step
                 ? "bg-ink/60 text-blood"
                 : i < step
@@ -85,14 +100,14 @@ export function BookWizard() {
             aria-current={i === step ? "step" : undefined}
           >
             <span className="mr-1 font-mono">{String(i + 1).padStart(2, "0")}</span>
-            {label}
+            <span className="hidden xs:inline sm:inline">{label}</span>
           </li>
         ))}
       </ol>
 
       <div className="p-5 sm:p-8">
         {step === 0 ? (
-          <div className="space-y-6">
+          <div className="space-y-6 mbb-fade-in">
             <div>
               <Label>Rite</Label>
               <div className="mt-3 grid grid-cols-2 gap-2">
@@ -123,8 +138,11 @@ export function BookWizard() {
                 id="clientName"
                 className="mt-2"
                 autoComplete="name"
+                aria-invalid={!!errors.clientName}
+                aria-describedby={errors.clientName ? "err-clientName" : undefined}
                 {...form.register("clientName")}
               />
+              <FieldError id="err-clientName" message={errors.clientName?.message} />
             </div>
             <div>
               <Label htmlFor="clientEmail">Email</Label>
@@ -134,8 +152,11 @@ export function BookWizard() {
                 inputMode="email"
                 autoComplete="email"
                 className="mt-2"
+                aria-invalid={!!errors.clientEmail}
+                aria-describedby={errors.clientEmail ? "err-clientEmail" : undefined}
                 {...form.register("clientEmail")}
               />
+              <FieldError id="err-clientEmail" message={errors.clientEmail?.message} />
             </div>
             <div>
               <Label htmlFor="clientPhone">Phone (optional)</Label>
@@ -152,15 +173,19 @@ export function BookWizard() {
         ) : null}
 
         {step === 1 ? (
-          <div className="space-y-6">
+          <div className="space-y-6 mbb-fade-in">
             <div>
               <Label htmlFor="scheduledAt">Preferred date / time</Label>
               <Input
                 id="scheduledAt"
                 type="datetime-local"
+                min={new Date().toISOString().slice(0, 16)}
                 className="mt-2"
                 {...form.register("scheduledAt")}
               />
+              <p className="mt-2 text-xs text-muted">
+                Approximate — we&apos;ll confirm an exact time by email.
+              </p>
             </div>
             <div>
               <Label htmlFor="notes">Placement, size, references</Label>
@@ -176,10 +201,10 @@ export function BookWizard() {
         ) : null}
 
         {step === 2 ? (
-          <div className="space-y-6">
+          <div className="space-y-6 mbb-fade-in">
             <p className="text-sm leading-relaxed text-bone/80">
-              Digital consent: you confirm you are eighteen or older and accept
-              studio policies linked from /faq.
+              Digital consent: confirm you are eighteen or older and accept the
+              studio policies linked from the FAQ.
             </p>
             <div>
               <Label htmlFor="consentName">Sign full legal name</Label>
@@ -187,8 +212,11 @@ export function BookWizard() {
                 id="consentName"
                 autoComplete="name"
                 className="mt-2"
+                aria-invalid={!!errors.consentName}
+                aria-describedby={errors.consentName ? "err-consentName" : undefined}
                 {...form.register("consentName")}
               />
+              <FieldError id="err-consentName" message={errors.consentName?.message} />
             </div>
             <label className="flex items-start gap-3 text-sm leading-relaxed text-bone/85">
               <input
@@ -199,30 +227,65 @@ export function BookWizard() {
                 className="mt-1 h-5 w-5 accent-blood"
               />
               <span>
-                I agree to the consent terms and understand deposit is
-                non-refundable per policy.
+                I agree to the consent terms and understand that the deposit is
+                non-refundable per studio policy.
               </span>
             </label>
-            <div className="rounded-sm border border-blood/30 bg-ink/50 p-4 text-xs leading-relaxed text-muted">
-              Square Web Payments SDK mounts here when{" "}
-              <code className="text-bone">
-                NEXT_PUBLIC_SQUARE_APPLICATION_ID
-              </code>{" "}
-              and server tokens are configured. Until then, submitting saves
-              the booking row only.
-            </div>
+            <FieldError message={errors.consentAck?.message} />
+          </div>
+        ) : null}
+
+        {step === 3 ? (
+          <div className="space-y-5 mbb-fade-in">
+            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-blood">
+              Review
+            </p>
+            <p className="text-sm leading-relaxed text-bone/80">
+              Take a last look. Submit to reserve your spot — you&apos;ll receive
+              a confirmation email with the deposit link shortly.
+            </p>
+            <dl className="divide-y divide-bone/10 border border-bone/10">
+              <ReviewRow label="Type" value={values.kind} />
+              <ReviewRow label="Name" value={values.clientName} />
+              <ReviewRow label="Email" value={values.clientEmail} />
+              {values.clientPhone ? (
+                <ReviewRow label="Phone" value={values.clientPhone} />
+              ) : null}
+              {values.scheduledAt ? (
+                <ReviewRow
+                  label="Preferred"
+                  value={new Date(values.scheduledAt).toLocaleString(undefined, {
+                    weekday: "short",
+                    month: "short",
+                    day: "numeric",
+                    hour: "numeric",
+                    minute: "2-digit",
+                  })}
+                />
+              ) : null}
+              {values.notes ? (
+                <ReviewRow label="Notes" value={values.notes} />
+              ) : null}
+              <ReviewRow label="Signed" value={values.consentName} />
+            </dl>
+            <p className="text-xs leading-relaxed text-muted">
+              Deposit:{" "}
+              <span className="text-bone">
+                ${values.kind === "consultation" ? "50" : "100"}
+              </span>{" "}
+              — charged via secure Square checkout once you confirm by email.
+            </p>
           </div>
         ) : null}
       </div>
 
-      {/* Sticky action bar on mobile */}
       <div className="sticky bottom-0 z-10 border-t border-bone/10 bg-char/95 p-4 backdrop-blur sm:static sm:bg-char sm:backdrop-blur-0 sm:p-5">
         <div className="flex flex-col gap-2 sm:flex-row sm:justify-between">
           {step > 0 ? (
             <Button
               type="button"
               variant="ghost"
-              onClick={() => setStep(step - 1)}
+              onClick={() => setStep((s) => Math.max(0, s - 1))}
               className="w-full sm:w-auto"
             >
               Back
@@ -230,10 +293,10 @@ export function BookWizard() {
           ) : (
             <span className="hidden sm:block" />
           )}
-          {step < 2 ? (
+          {step < STEPS.length - 1 ? (
             <Button
               type="button"
-              onClick={() => setStep(step + 1)}
+              onClick={() => void next()}
               className="w-full sm:w-auto sm:min-w-[180px]"
             >
               Continue
@@ -243,12 +306,31 @@ export function BookWizard() {
               type="submit"
               className="w-full sm:w-auto sm:min-w-[180px]"
               disabled={form.formState.isSubmitting}
+              aria-busy={form.formState.isSubmitting}
             >
-              {form.formState.isSubmitting ? "Submitting…" : "Submit booking"}
+              {form.formState.isSubmitting ? (
+                <>
+                  <Spinner className="text-bandage" />
+                  Reserving…
+                </>
+              ) : (
+                "Confirm booking"
+              )}
             </Button>
           )}
         </div>
       </div>
     </form>
+  );
+}
+
+function ReviewRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="grid grid-cols-[110px_1fr] gap-3 px-4 py-3 text-sm sm:px-5">
+      <dt className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted">
+        {label}
+      </dt>
+      <dd className="break-words text-bone/90">{value}</dd>
+    </div>
   );
 }

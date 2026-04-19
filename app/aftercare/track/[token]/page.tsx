@@ -12,8 +12,13 @@ export default async function AftercareTrackPage({ params }: Props) {
   const db = getDb();
   if (!db) {
     return (
-      <div className="mx-auto max-w-xl px-5 py-12 text-sm text-muted sm:px-6 sm:py-16">
-        Database not configured — cannot load tracker.
+      <div className="mx-auto max-w-xl px-5 py-12 text-center sm:px-6 sm:py-16">
+        <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-blood">
+          Unavailable
+        </p>
+        <p className="mt-3 text-sm leading-relaxed text-bone/80">
+          The tracker is temporarily offline. Please try again shortly.
+        </p>
       </div>
     );
   }

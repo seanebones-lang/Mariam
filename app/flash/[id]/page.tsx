@@ -18,6 +18,8 @@ export default async function FlashDetailPage({ params }: Props) {
     <div className="mx-auto max-w-4xl px-5 py-10 sm:px-6 sm:py-16">
       <div className="grid gap-8 md:grid-cols-2 md:gap-10">
         <div
+          role="img"
+          aria-label={piece.title}
           className="aspect-square border border-bone/10 bg-cover bg-center"
           style={{ backgroundImage: `url(${piece.imageUrl})` }}
         />
@@ -33,7 +35,7 @@ export default async function FlashDetailPage({ params }: Props) {
           <p className="mt-6 font-serif text-2xl text-blood sm:text-3xl">
             ${(piece.priceCents / 100).toFixed(0)}
             <span className="ml-2 text-xs font-sans font-normal text-muted sm:text-sm">
-              + studio deposit via Square
+              + studio deposit
             </span>
           </p>
           <FlashClaim flashId={piece.id} title={piece.title} />
