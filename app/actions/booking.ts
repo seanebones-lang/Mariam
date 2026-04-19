@@ -6,6 +6,11 @@ import { getDb } from "@/db";
 import { bookings, consents } from "@/db/schema";
 import { hashIp } from "@/lib/hash";
 import { headers } from "next/headers";
+import {
+  bookingConfirmationEmail,
+  emailConfigured,
+  sendEmail,
+} from "@/lib/email";
 
 const schema = z
   .object({
@@ -53,5 +58,23 @@ export async function createBooking(raw: unknown) {
     signerEmail: parsed.data.clientEmail,
     ipHash: hashIp(ip),
   });
+
+  const depositCents = parsed.data.kind === "consultation" ? 5000 : 10000;
+  if (emailConfigured()) {
+    const tpl = bookingConfirmationEmail({
+      clientName: parsed.data.clientName,
+      bookingId: id,
+      kind: parsed.data.kind,
+      scheduledAt: parsed.data.scheduledAt ?? null,
+      depositCents,
+    });
+    await sendEmail({
+      to: parsed.data.clientEmail,
+      subject: tpl.subject,
+      html: tpl.html,
+      text: tpl.text,
+    }).catch(() => null);
+  }
+
   return { ok: true as const, bookingId: id };
 }

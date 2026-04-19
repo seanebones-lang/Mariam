@@ -27,6 +27,7 @@ export function FlashClaim({
   const [errors, setErrors] = useState<Errors>({});
   const [loading, setLoading] = useState(false);
   const [holdUntil, setHoldUntil] = useState<Date | null>(null);
+  const [claimId, setClaimId] = useState<string | null>(null);
   const [remaining, setRemaining] = useState<number>(0);
 
   useEffect(() => {
@@ -61,6 +62,7 @@ export function FlashClaim({
         ok?: boolean;
         error?: string;
         holdUntil?: string;
+        claimId?: string;
       };
       if (!res.ok || !data.ok) {
         toast.error(data.error ?? "Could not place hold. Please try again.");
@@ -70,6 +72,7 @@ export function FlashClaim({
         ? new Date(data.holdUntil)
         : new Date(Date.now() + 15 * 60 * 1000);
       setHoldUntil(until);
+      if (data.claimId) setClaimId(data.claimId);
       toast.success(
         "Hold placed. Watch your email for the deposit link.",
         "15-min hold"
@@ -117,6 +120,14 @@ export function FlashClaim({
           </p>
         )}
         <div className="mt-5 flex flex-col gap-2 sm:flex-row">
+          {!expired && claimId ? (
+            <Link
+              href={`/flash/pay/${encodeURIComponent(claimId)}`}
+              className="inline-flex items-center justify-center border border-blood bg-blood px-4 py-2 text-sm font-semibold text-bandage hover:bg-blood/80"
+            >
+              Pay deposit now
+            </Link>
+          ) : null}
           <Link
             href="/flash"
             className="inline-flex items-center justify-center border border-bone/25 px-4 py-2 text-sm text-bone hover:border-blood/60 hover:text-bandage"

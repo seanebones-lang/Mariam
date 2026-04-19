@@ -2,6 +2,7 @@ import { and, eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { getDb } from "@/db";
 import { aftercareEvents, aftercareSubscribers } from "@/db/schema";
+import { aftercareDayEmail, emailConfigured, sendEmail } from "@/lib/email";
 
 const DAYS = [0, 1, 3, 7, 14, 30];
 
@@ -53,6 +54,16 @@ export async function GET(req: Request) {
       });
       events += 1;
       maxDay = Math.max(maxDay, day);
+
+      if (emailConfigured()) {
+        const tpl = aftercareDayEmail(day);
+        await sendEmail({
+          to: sub.email,
+          subject: tpl.subject,
+          html: tpl.html,
+          text: tpl.text,
+        }).catch(() => null);
+      }
     }
     if (maxDay !== sub.lastSentDay) {
       await db

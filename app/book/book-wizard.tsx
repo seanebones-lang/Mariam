@@ -69,8 +69,8 @@ export function BookWizard() {
   async function onSubmit(values: Form) {
     const r = await createBooking(values);
     if (r.ok) {
-      toast.success("Booking marked. Check your email for next steps.", "Reserved");
-      router.push(`/book/success?ref=${encodeURIComponent(r.bookingId)}`);
+      toast.success("Booking marked. Pay your deposit to lock the slot.", "Reserved");
+      router.push(`/book/pay/${encodeURIComponent(r.bookingId)}`);
     } else {
       toast.error(r.error ?? "Could not save booking. Please try again.");
     }
