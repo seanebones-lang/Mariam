@@ -7,6 +7,7 @@ import { SmoothScroll } from "@/components/providers/smooth-scroll";
 import { AgeGate } from "@/components/providers/age-gate";
 import { CookieBanner } from "@/components/providers/cookie-banner";
 import { Concierge } from "@/components/chat/concierge";
+import { ToastProvider } from "@/components/ui/toast";
 
 const display = UnifrakturCook({
   variable: "--font-display",
@@ -67,13 +68,23 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <SmoothScroll>
-          <div className="grain" aria-hidden />
-          <AgeGate />
-          <CookieBanner />
-          <SiteHeader />
-          <main className="flex-1">{children}</main>
-          <SiteFooter />
-          <Concierge />
+          <ToastProvider>
+            <div className="grain" aria-hidden />
+            <a
+              href="#main"
+              className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[110] focus:bg-blood focus:px-4 focus:py-2 focus:font-mono focus:text-[11px] focus:uppercase focus:tracking-[0.3em] focus:text-bandage"
+            >
+              Skip to content
+            </a>
+            <AgeGate />
+            <CookieBanner />
+            <SiteHeader />
+            <main id="main" className="flex-1">
+              {children}
+            </main>
+            <SiteFooter />
+            <Concierge />
+          </ToastProvider>
         </SmoothScroll>
       </body>
     </html>

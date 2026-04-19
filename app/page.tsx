@@ -34,6 +34,8 @@ export default async function HomePage() {
                 className="group border border-bone/10 bg-ink/40 transition hover:border-blood/40 active:border-blood/40"
               >
                 <div
+                  role="img"
+                  aria-label={f.title}
                   className="aspect-square bg-cover bg-center"
                   style={{ backgroundImage: `url(${f.imageUrl})` }}
                 />
@@ -71,8 +73,16 @@ export default async function HomePage() {
             Recent work
           </h2>
           <p className="mt-4 max-w-xl text-[13px] leading-relaxed text-bone/70 sm:text-sm">
-            Pulled from @maribellebones when Instagram Graph API keys are set;
-            otherwise seeded previews.
+            Recent pieces from{" "}
+            <a
+              href="https://www.instagram.com/maribellebones/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blood hover:underline"
+            >
+              @maribellebones
+            </a>
+            .
           </p>
           <div className="mt-8 grid grid-cols-2 gap-1.5 sm:mt-10 sm:gap-2 md:grid-cols-4 md:gap-3">
             {tiles.map((item) => (
@@ -122,8 +132,8 @@ export default async function HomePage() {
           </h2>
           <ul className="mt-8 space-y-3 sm:space-y-4">
             {tours.length === 0 ? (
-              <li className="text-sm text-muted">
-                Tour dates appear here once added in admin or database.
+              <li className="border border-dashed border-bone/15 bg-char/40 px-5 py-8 text-center text-sm text-muted">
+                The next tour stretch is being booked. Check back soon.
               </li>
             ) : (
               tours.map((t) => (

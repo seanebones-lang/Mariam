@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
 
 const links = [
   { href: "/portfolio", label: "Work" },
@@ -15,15 +17,37 @@ const links = [
   { href: "/faq", label: "FAQ" },
 ];
 
+function isActive(pathname: string, href: string) {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export function SiteHeader() {
+  const pathname = usePathname() ?? "/";
   const [open, setOpen] = useState(false);
+  const [lastPath, setLastPath] = useState(pathname);
+  const closeBtnRef = useRef<HTMLButtonElement | null>(null);
+  const openerRef = useRef<HTMLButtonElement | null>(null);
+
+  if (lastPath !== pathname) {
+    setLastPath(pathname);
+    if (open) setOpen(false);
+  }
 
   useEffect(() => {
     if (!open) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    closeBtnRef.current?.focus();
+    const opener = openerRef.current;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+      opener?.focus();
     };
   }, [open]);
 
@@ -36,27 +60,44 @@ export function SiteHeader() {
           <Link
             href="/"
             onClick={close}
-            className="font-mono text-[11px] uppercase tracking-[0.4em] text-bandage sm:text-xs"
+            className="font-mono text-[11px] uppercase tracking-[0.4em] text-bandage transition-colors hover:text-blood sm:text-xs"
           >
             Mari Belle Bones
           </Link>
-          <nav className="hidden items-center gap-1 md:flex">
-            {links.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                className="px-3 py-2 text-[11px] font-medium uppercase tracking-widest text-bone/70 transition-colors hover:text-blood"
-              >
-                {l.label}
-              </Link>
-            ))}
+          <nav className="hidden items-center gap-1 md:flex" aria-label="Primary">
+            {links.map((l) => {
+              const active = isActive(pathname, l.href);
+              return (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  aria-current={active ? "page" : undefined}
+                  className={cn(
+                    "relative px-3 py-2 text-[11px] font-medium uppercase tracking-widest transition-colors",
+                    active
+                      ? "text-bandage"
+                      : "text-bone/70 hover:text-blood"
+                  )}
+                >
+                  {l.label}
+                  {active ? (
+                    <span
+                      aria-hidden
+                      className="absolute inset-x-3 -bottom-px h-px bg-blood"
+                    />
+                  ) : null}
+                </Link>
+              );
+            })}
           </nav>
           <button
+            ref={openerRef}
             type="button"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
+            aria-controls="mobile-nav"
             onClick={() => setOpen((v) => !v)}
-            className="-mr-2 p-2 text-bone md:hidden"
+            className="-mr-2 p-2 text-bone hover:text-blood md:hidden"
           >
             {open ? (
               <X className="h-5 w-5" aria-hidden />
@@ -69,21 +110,52 @@ export function SiteHeader() {
 
       {open ? (
         <div
-          className="fixed inset-0 top-14 z-40 flex flex-col bg-ink/95 backdrop-blur-xl md:hidden"
+          id="mobile-nav"
+          className="mbb-fade-in fixed inset-0 top-14 z-40 flex flex-col bg-ink/95 backdrop-blur-xl md:hidden"
           role="dialog"
           aria-modal="true"
+          aria-label="Mobile navigation"
         >
-          <nav className="flex flex-col divide-y divide-bone/10 border-t border-bone/10">
-            {links.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                onClick={close}
-                className="px-6 py-5 font-serif text-2xl text-bandage hover:text-blood"
-              >
-                {l.label}
-              </Link>
-            ))}
+          <button
+            ref={closeBtnRef}
+            type="button"
+            onClick={close}
+            className="sr-only focus:not-sr-only focus:fixed focus:right-4 focus:top-3 focus:p-2 focus:text-bone"
+            aria-label="Close menu"
+          >
+            Close
+          </button>
+          <nav
+            className="mbb-slide-down flex flex-col divide-y divide-bone/10 border-t border-bone/10"
+            aria-label="Mobile primary"
+          >
+            {links.map((l) => {
+              const active = isActive(pathname, l.href);
+              return (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  onClick={close}
+                  aria-current={active ? "page" : undefined}
+                  className={cn(
+                    "flex items-center justify-between px-6 py-5 font-serif text-2xl transition-colors",
+                    active
+                      ? "bg-blood/10 text-blood"
+                      : "text-bandage hover:text-blood"
+                  )}
+                >
+                  <span>{l.label}</span>
+                  {active ? (
+                    <span
+                      aria-hidden
+                      className="font-mono text-[10px] uppercase tracking-[0.3em] text-blood"
+                    >
+                      Here
+                    </span>
+                  ) : null}
+                </Link>
+              );
+            })}
           </nav>
           <div className="mt-auto border-t border-bone/10 px-6 py-6 font-mono text-[10px] uppercase tracking-[0.4em] text-bone/55">
             <p>NYC · Traveling</p>

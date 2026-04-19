@@ -13,13 +13,20 @@ export default async function TourPage() {
         Guest spots
       </h1>
       <p className="mt-4 text-sm leading-relaxed text-bone/80">
-        Traveling artist calendar. Cities and venues are editable from{" "}
-        <code className="text-blood">/admin</code> when database + admin
-        password are set.
+        Where Mari is working next. Tap any city to request a slot at that
+        guest residency.
       </p>
       <ul className="mt-10 space-y-3 sm:space-y-4">
         {rows.length === 0 ? (
-          <li className="text-sm text-muted">No tour rows yet.</li>
+          <li className="border border-dashed border-bone/15 bg-char/40 px-5 py-10 text-center text-sm text-muted">
+            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-blood">
+              Quiet stretch
+            </p>
+            <p className="mt-3 leading-relaxed">
+              No travel dates on the books right now. Follow on Instagram for
+              the next announcement.
+            </p>
+          </li>
         ) : (
           rows.map((t) => (
             <li

@@ -30,9 +30,9 @@ export default function AftercarePage() {
       <h2 className="mt-12 font-serif text-2xl leading-tight text-blood sm:mt-14 sm:text-3xl">
         Email timeline
       </h2>
-      <p className="mt-3 text-sm leading-relaxed text-muted">
-        Sign up for day 0 / 1 / 3 / 7 / 14 / 30 reminders (cron on Vercel +
-        Resend when configured).
+      <p className="mt-3 text-sm leading-relaxed text-bone/80">
+        Get gentle check-ins on day 0, 1, 3, 7, 14, and 30 — quick reminders
+        of what your skin should be doing, and what to watch for.
       </p>
       <div className="mt-6">
         <AftercareForm />

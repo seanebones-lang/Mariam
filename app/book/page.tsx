@@ -12,9 +12,23 @@ export default function BookPage() {
         Book + deposit
       </h1>
       <p className="mt-4 text-[13px] leading-relaxed text-bone/70 sm:text-sm">
-        Consultation or tattoo session. Intake, consent, then Square deposit
-        when keys are live.
+        Reserve a consultation or session in four short steps. We&apos;ll
+        confirm by email and send a secure link for your deposit.
       </p>
+      <ol className="mt-6 grid grid-cols-2 gap-3 text-[11px] uppercase tracking-[0.2em] text-muted sm:grid-cols-4">
+        <li className="border border-bone/10 px-3 py-2">
+          <span className="font-mono text-blood">01</span> Contact
+        </li>
+        <li className="border border-bone/10 px-3 py-2">
+          <span className="font-mono text-blood">02</span> Details
+        </li>
+        <li className="border border-bone/10 px-3 py-2">
+          <span className="font-mono text-blood">03</span> Consent
+        </li>
+        <li className="border border-bone/10 px-3 py-2">
+          <span className="font-mono text-blood">04</span> Review
+        </li>
+      </ol>
       <div className="mt-8 sm:mt-10">
         <BookWizard />
       </div>

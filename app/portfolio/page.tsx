@@ -15,10 +15,8 @@ export default async function PortfolioPage() {
         Recent work
       </h1>
       <p className="mt-4 max-w-2xl text-[13px] leading-relaxed text-bone/70 sm:text-sm">
-        Live grid from Instagram Graph API when{" "}
-        <code className="text-blood">INSTAGRAM_ACCESS_TOKEN</code> and{" "}
-        <code className="text-blood">INSTAGRAM_USER_ID</code> are set. Otherwise
-        seeded stills.
+        A rolling selection of recent work — pieces healed, pieces fresh, and
+        the occasional flash that found its skin.
       </p>
       <div className="mt-10 grid grid-cols-2 gap-1.5 sm:mt-12 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 lg:gap-4">
         {tiles.map((t) => (
