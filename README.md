@@ -22,22 +22,42 @@ npm run db:push   # push schema to Neon (requires DATABASE_URL)
 
 ## Sanity (portfolio)
 
-Mari edits **Portfolio piece** documents in [Sanity](https://www.sanity.io/manage) (create a project, invite her as Editor). The site reads published pieces on the home page and `/portfolio`.
+**Mari never needs code or Vercel to change photos or copy.** She uses **Sanity Studio** (browser). Images and text live in Sanity’s content lake and CDN; this Next site only **reads** them via the API.
 
-1. Create a project + dataset (e.g. `production`).
-2. Copy `.env.example` Sanity variables into `.env.local` and Vercel:
-   - `NEXT_PUBLIC_SANITY_PROJECT_ID`
-   - `NEXT_PUBLIC_SANITY_DATASET` (usually `production`)
-   - `SANITY_API_READ_TOKEN` (read token from **sanity.io/manage → API** — recommended even for public datasets)
-3. From the repo root, deploy the content schema to that dataset:
+### One-time setup (you or a dev)
+
+1. In [sanity.io/manage](https://www.sanity.io/manage), create or open the project (e.g. **MBB Tattoos**). Copy the **Project ID** from the project URL or **Project → Settings** (short id, e.g. `xxxxxxxx`).
+2. Ensure a **dataset** exists (default is often `production`).
+3. In this repo, add to **`.env.local`** (and the same public vars on **Vercel** for the live site):
+
+   - `NEXT_PUBLIC_SANITY_PROJECT_ID` — project id from the dashboard  
+   - `NEXT_PUBLIC_SANITY_DATASET` — usually `production`  
+   - `SANITY_API_READ_TOKEN` — **API → Tokens** in manage; create a **read** token for the dataset (the site uses it server-side only)
+
+4. **Deploy the schema** (defines “Portfolio piece” in the dataset):
 
    ```bash
    npm run sanity:schemas
    ```
 
-4. **Optional — fast updates:** set `SANITY_REVALIDATE_SECRET` in Vercel, then add a Sanity **webhook** (HTTP POST) to `https://<your-domain>/api/revalidate/sanity` with header `Authorization: Bearer <SANITY_REVALIDATE_SECRET>`. Otherwise the portfolio cache revalidates on the interval set in `lib/get-portfolio.ts` (or on redeploy).
+5. **Deploy Studio** so the dashboard **Studios** tab is no longer empty and Mari has a real CMS URL. From the repo (with the same env in `.env.local`):
 
-5. **Local Studio** (optional): `npm run sanity:dev` — requires the same env vars.
+   ```bash
+   npx sanity login
+   npm run sanity:deploy
+   ```
+
+   First run prompts for a hostname (e.g. `mbb-tattoos` → `https://mbb-tattoos.sanity.studio`). After that, **invite Mari** under **Project → Members** with role **Editor** (or **Administrator** if she should manage tokens too).
+
+6. **Optional — updates on the public site within ~seconds:** set `SANITY_REVALIDATE_SECRET` on Vercel, then in manage add a **Webhook** (HTTP POST) to `https://<your-domain>/api/revalidate/sanity` with header `Authorization: Bearer <SANITY_REVALIDATE_SECRET>`. Without it, the site still updates on the cache window in `lib/get-portfolio.ts` (or after redeploy).
+
+### Mari’s workflow (ongoing)
+
+1. Open the hosted Studio URL from step 5 (or from **Studios** in manage).  
+2. Create **Portfolio piece** documents: upload **Image**, fill **Alt text**, optional **Outbound link**, set **Order** (lower = earlier in the grid).  
+3. **Publish** each document. The live site shows **published** content only.
+
+**Local Studio** (optional, for you): `npm run sanity:dev` with the same env vars.
 
 Instagram env vars are **not** used for the portfolio grid anymore; they remain optional for future use.
 
