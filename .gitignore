@@ -17,6 +17,10 @@
 /.next/
 /out/
 
+# Sanity Studio build output (use `npm run sanity:deploy`, do not commit)
+/.sanity/
+/dist/
+
 # production
 /build
 
