@@ -1,5 +1,9 @@
 import { cache } from "react";
 
+/**
+ * Instagram Graph API types — **not used for the public portfolio grid**
+ * (portfolio is Sanity-backed). Kept for optional future integrations.
+ */
 export type IgMedia = {
   id: string;
   caption?: string;

@@ -1,6 +1,6 @@
 # Mari Belle Bones — MBB site
 
-Next.js 16 (App Router), React 19, Tailwind v4, Drizzle + Neon, Square (deposits / gift cards), xAI Grok + TTS concierge, Instagram Graph portfolio, Resend-ready aftercare cron.
+Next.js 16 (App Router), React 19, Tailwind v4, Drizzle + Neon, Square (deposits / gift cards), xAI Grok + TTS concierge, **Sanity** portfolio CMS, Resend-ready aftercare cron.
 
 ## Local development
 
@@ -19,6 +19,27 @@ npm run dev
 ```bash
 npm run db:push   # push schema to Neon (requires DATABASE_URL)
 ```
+
+## Sanity (portfolio)
+
+Mari edits **Portfolio piece** documents in [Sanity](https://www.sanity.io/manage) (create a project, invite her as Editor). The site reads published pieces on the home page and `/portfolio`.
+
+1. Create a project + dataset (e.g. `production`).
+2. Copy `.env.example` Sanity variables into `.env.local` and Vercel:
+   - `NEXT_PUBLIC_SANITY_PROJECT_ID`
+   - `NEXT_PUBLIC_SANITY_DATASET` (usually `production`)
+   - `SANITY_API_READ_TOKEN` (read token from **sanity.io/manage → API** — recommended even for public datasets)
+3. From the repo root, deploy the content schema to that dataset:
+
+   ```bash
+   npm run sanity:schemas
+   ```
+
+4. **Optional — fast updates:** set `SANITY_REVALIDATE_SECRET` in Vercel, then add a Sanity **webhook** (HTTP POST) to `https://<your-domain>/api/revalidate/sanity` with header `Authorization: Bearer <SANITY_REVALIDATE_SECRET>`. Otherwise the portfolio cache revalidates on the interval set in `lib/get-portfolio.ts` (or on redeploy).
+
+5. **Local Studio** (optional): `npm run sanity:dev` — requires the same env vars.
+
+Instagram env vars are **not** used for the portfolio grid anymore; they remain optional for future use.
 
 ## Security
 

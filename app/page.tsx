@@ -2,18 +2,17 @@ import Link from "next/link";
 import { HeroSection } from "@/components/hero/hero-section";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { getInstagramFeed } from "@/lib/instagram";
-import { portfolioTiles } from "@/lib/portfolio-tiles";
+import { getPortfolioSection } from "@/lib/get-portfolio";
 import { getTourPreview, getFlashPreview } from "@/lib/site-data";
 import { BOOKING_URL } from "@/lib/booking-url";
 
 export default async function HomePage() {
-  const [ig, tours, flash] = await Promise.all([
-    getInstagramFeed(),
+  const [portfolio, tours, flash] = await Promise.all([
+    getPortfolioSection(),
     getTourPreview(),
     getFlashPreview(),
   ]);
-  const tiles = portfolioTiles(ig);
+  const { tiles, uiNote } = portfolio;
 
   return (
     <>
@@ -25,7 +24,7 @@ export default async function HomePage() {
             Flash
           </p>
           <h2 className="mt-3 font-serif text-3xl leading-tight text-bandage sm:text-4xl md:text-5xl">
-            Claim the mark
+            Artist&apos;s Choice
           </h2>
           <div className="mt-8 grid gap-4 sm:mt-10 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
             {flash.map((f) => (
@@ -74,16 +73,35 @@ export default async function HomePage() {
             Recent work
           </h2>
           <p className="mt-4 max-w-xl text-[13px] leading-relaxed text-bone/70 sm:text-sm">
-            Recent pieces from{" "}
-            <a
-              href="https://www.instagram.com/maribellebones/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blood hover:underline"
-            >
-              @maribellebones
-            </a>
-            .
+            {uiNote === null ? (
+              <>
+                Curated in Sanity — Mari updates this grid anytime without a
+                deploy. Still on{" "}
+                <a
+                  href="https://www.instagram.com/maribellebones/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blood hover:underline"
+                >
+                  @maribellebones
+                </a>{" "}
+                for day-to-day drops.
+              </>
+            ) : uiNote === "sanity_unconfigured" ? (
+              <>
+                Portfolio CMS is not connected yet — showing placeholder
+                stills. Add{" "}
+                <code className="text-blood">NEXT_PUBLIC_SANITY_PROJECT_ID</code>{" "}
+                and deploy schema (see README).
+              </>
+            ) : (
+              <>
+                No published portfolio pieces in Sanity yet — placeholders
+                below. Publish{" "}
+                <strong className="text-bone">Portfolio piece</strong>{" "}
+                documents in your Sanity dataset.
+              </>
+            )}
           </p>
           <div className="mt-8 grid grid-cols-2 gap-1.5 sm:mt-10 sm:gap-2 md:grid-cols-4 md:gap-3">
             {tiles.map((item) => (
@@ -134,8 +152,8 @@ export default async function HomePage() {
           </h2>
           <ul className="mt-8 space-y-3 sm:space-y-4">
             {tours.length === 0 ? (
-              <li className="border border-dashed border-bone/15 bg-char/40 px-5 py-8 text-center text-sm text-muted">
-                The next tour stretch is being booked. Check back soon.
+              <li className="text-sm text-muted">
+                Tour dates appear here once added in admin or database.
               </li>
             ) : (
               tours.map((t) => (

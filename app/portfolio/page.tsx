@@ -1,12 +1,13 @@
-import { getInstagramFeed } from "@/lib/instagram";
-import { portfolioTiles } from "@/lib/portfolio-tiles";
+import { getPortfolioSection } from "@/lib/get-portfolio";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { BOOKING_URL } from "@/lib/booking-url";
 
 export const metadata = { title: "Portfolio" };
 
 export default async function PortfolioPage() {
-  const ig = await getInstagramFeed();
-  const tiles = portfolioTiles(ig);
-  const live = ig.length > 0;
+  const { tiles, uiNote } = await getPortfolioSection();
+
   return (
     <div className="mx-auto max-w-6xl px-5 py-12 sm:px-6 sm:py-16">
       <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-blood sm:text-xs sm:tracking-[0.4em]">
@@ -16,11 +17,19 @@ export default async function PortfolioPage() {
         Recent work
       </h1>
       <p className="mt-4 max-w-2xl text-[13px] leading-relaxed text-bone/70 sm:text-sm">
-        A rolling selection of recent work — pieces healed, pieces fresh, and
-        the occasional flash that found its skin.
-        {!live ? (
-          <span className="block mt-2 text-bone/55">
-            The live feed is resting — here are archive highlights. Follow{" "}
+        {uiNote === null ? (
+          <>
+            Mari curates this grid in{" "}
+            <a
+              href="https://www.sanity.io/manage"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blood hover:underline"
+            >
+              Sanity Studio
+            </a>{" "}
+            (hosted) — changes go live within a few minutes after you set up a
+            webhook, or on the next deploy. Day-to-day process on{" "}
             <a
               href="https://www.instagram.com/maribellebones/"
               target="_blank"
@@ -28,10 +37,35 @@ export default async function PortfolioPage() {
               className="text-blood hover:underline"
             >
               @maribellebones
-            </a>{" "}
-            for the latest.
-          </span>
-        ) : null}
+            </a>
+            .
+          </>
+        ) : uiNote === "sanity_unconfigured" ? (
+          <>
+            Sanity is not configured for this deployment — showing archive
+            highlights. Add{" "}
+            <code className="text-blood">NEXT_PUBLIC_SANITY_PROJECT_ID</code>{" "}
+            and run{" "}
+            <code className="text-blood">npm run sanity:schemas</code> (see
+            README), then invite Mari at{" "}
+            <a
+              href="https://www.sanity.io/manage"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blood hover:underline"
+            >
+              sanity.io/manage
+            </a>
+            .
+          </>
+        ) : (
+          <>
+            No published{" "}
+            <strong className="text-bone">Portfolio piece</strong> documents
+            yet — placeholders below. Open your Sanity project and publish at
+            least one piece with an image and alt text.
+          </>
+        )}
       </p>
       <div className="mt-10 grid grid-cols-2 gap-1.5 sm:mt-12 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 lg:gap-4">
         {tiles.map((t) => (
@@ -51,6 +85,16 @@ export default async function PortfolioPage() {
             />
           </a>
         ))}
+      </div>
+      <div className="mt-10">
+        <a
+          href={BOOKING_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={cn(buttonVariants({ variant: "outline" }))}
+        >
+          Book a session
+        </a>
       </div>
     </div>
   );

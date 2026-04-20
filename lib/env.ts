@@ -17,6 +17,8 @@ const serverSchema = z.object({
   UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
   INSTAGRAM_ACCESS_TOKEN: z.string().optional(),
   INSTAGRAM_USER_ID: z.string().optional(),
+  SANITY_API_READ_TOKEN: z.string().optional(),
+  SANITY_REVALIDATE_SECRET: z.string().optional(),
   ADMIN_SESSION_SECRET: z.string().optional(),
   ADMIN_PASSWORD: z.string().optional(),
   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().optional(),
@@ -26,6 +28,8 @@ const serverSchema = z.object({
 const clientSchema = z.object({
   NEXT_PUBLIC_APP_URL: z.string().url().optional(),
   NEXT_PUBLIC_BOOKING_URL: z.string().url().optional(),
+  NEXT_PUBLIC_SANITY_PROJECT_ID: z.string().min(1).optional(),
+  NEXT_PUBLIC_SANITY_DATASET: z.string().min(1).optional(),
   NEXT_PUBLIC_SQUARE_APPLICATION_ID: z.string().optional(),
   NEXT_PUBLIC_SQUARE_LOCATION_ID: z.string().optional(),
 });
@@ -45,6 +49,8 @@ export function getServerEnv() {
     UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
     INSTAGRAM_ACCESS_TOKEN: process.env.INSTAGRAM_ACCESS_TOKEN,
     INSTAGRAM_USER_ID: process.env.INSTAGRAM_USER_ID,
+    SANITY_API_READ_TOKEN: process.env.SANITY_API_READ_TOKEN,
+    SANITY_REVALIDATE_SECRET: process.env.SANITY_REVALIDATE_SECRET,
     ADMIN_SESSION_SECRET: process.env.ADMIN_SESSION_SECRET,
     ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
@@ -57,6 +63,8 @@ export function getClientEnv() {
   return clientSchema.parse({
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
     NEXT_PUBLIC_BOOKING_URL: process.env.NEXT_PUBLIC_BOOKING_URL,
+    NEXT_PUBLIC_SANITY_PROJECT_ID: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+    NEXT_PUBLIC_SANITY_DATASET: process.env.NEXT_PUBLIC_SANITY_DATASET,
     NEXT_PUBLIC_SQUARE_APPLICATION_ID:
       process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID,
     NEXT_PUBLIC_SQUARE_LOCATION_ID:
