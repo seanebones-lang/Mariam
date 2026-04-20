@@ -28,7 +28,7 @@ npm run db:push   # push schema to Neon (requires DATABASE_URL)
 
 1. In [sanity.io/manage](https://www.sanity.io/manage), create or open the project (e.g. **MBB Tattoos**). Copy the **Project ID** from the project URL or **Project → Settings** (short id, e.g. `xxxxxxxx`).
 2. Ensure a **dataset** exists (default is often `production`).
-3. In this repo, add to **`.env.local`** (and the same public vars on **Vercel** for the live site):
+3. In this repo, add to **`.env.local`** (and the same public vars on **Vercel** for the live site). The Sanity CLI (`sanity:schemas`, `sanity:deploy`, `sanity:dev`) **loads `.env.local` via `sanity.cli.ts`** — you do not need a separate `.env` for Sanity unless you prefer it.
 
    - `NEXT_PUBLIC_SANITY_PROJECT_ID` — project id from the dashboard  
    - `NEXT_PUBLIC_SANITY_DATASET` — usually `production`  
