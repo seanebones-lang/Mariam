@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { getDb } from "@/db";
-import { flashClaims, flashPieces } from "@/db/schema";
+import { flashClaims } from "@/db/schema";
 import { DepositForm } from "@/components/checkout/deposit-form";
 import { getClientEnv } from "@/lib/env";
+import { getFlashById } from "@/lib/site-data";
 
 export const metadata = { title: "Pay flash deposit" };
 
@@ -24,11 +25,7 @@ export default async function FlashPayPage({ params }: Props) {
     .limit(1);
   if (!claim) notFound();
 
-  const [piece] = await db
-    .select()
-    .from(flashPieces)
-    .where(eq(flashPieces.id, claim.flashPieceId))
-    .limit(1);
+  const piece = await getFlashById(claim.flashPieceId);
   if (!piece) notFound();
 
   const env = getClientEnv();

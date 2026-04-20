@@ -20,9 +20,18 @@ npm run dev
 npm run db:push   # push schema to Neon (requires DATABASE_URL)
 ```
 
-## Sanity (portfolio)
+## Sanity (portfolio, flash, tour, aftercare)
 
-**Mari never needs code or Vercel to change photos or copy.** She uses **Sanity Studio** (browser). Images and text live in Sanity’s content lake and CDN; this Next site only **reads** them via the API.
+**Mari never needs code or Vercel to change most marketing content.** She uses **Sanity Studio** (browser). The site reads **published** documents via the API:
+
+| Studio type | What it drives |
+|---------------|------------------|
+| **Portfolio piece** | Home + `/portfolio` grids |
+| **Flash piece** | `/flash` shop (image, price, slug URL). Claims/deposits still use Postgres; `flash_claims.flash_piece_id` may be a Sanity **slug** or a legacy DB id. |
+| **Guest spot (tour)** | Home tour strip + `/tour` (replaces Neon `tour_dates` when at least one published stop exists). |
+| **Aftercare page** | `/aftercare` copy when **one** published document exists; otherwise the built-in default text is shown. |
+
+If Sanity has **no** tour rows, the app falls back to **Neon `tour_dates`** (and `/admin` can still add those). If Sanity has **no** flash pieces, the app falls back to **Neon `flash_pieces`** / demo seeds.
 
 ### One-time setup (you or a dev)
 
@@ -34,7 +43,7 @@ npm run db:push   # push schema to Neon (requires DATABASE_URL)
    - `NEXT_PUBLIC_SANITY_DATASET` — usually `production`  
    - `SANITY_API_READ_TOKEN` — **API → Tokens** in manage; create a **read** token for the dataset (the site uses it server-side only)
 
-4. **Deploy the schema** (defines “Portfolio piece” in the dataset):
+4. **Deploy the schema** (defines Portfolio piece, Flash piece, Guest spot, Aftercare page in the dataset):
 
    ```bash
    npm run sanity:schemas
@@ -49,12 +58,14 @@ npm run db:push   # push schema to Neon (requires DATABASE_URL)
 
    First run prompts for a hostname (e.g. `mbb-tattoos` → `https://mbb-tattoos.sanity.studio`). After that, **invite Mari** under **Project → Members** with role **Editor** (or **Administrator** if she should manage tokens too).
 
-6. **Optional — updates on the public site within ~seconds:** set `SANITY_REVALIDATE_SECRET` on Vercel, then in manage add a **Webhook** (HTTP POST) to `https://<your-domain>/api/revalidate/sanity` with header `Authorization: Bearer <SANITY_REVALIDATE_SECRET>`. Without it, the site still updates on the cache window in `lib/get-portfolio.ts` (or after redeploy).
+6. **Optional — updates on the public site within ~seconds:** set `SANITY_REVALIDATE_SECRET` on Vercel, then in manage add a **Webhook** (HTTP POST) to `https://<your-domain>/api/revalidate/sanity` with header `Authorization: Bearer <SANITY_REVALIDATE_SECRET>`. That route revalidates portfolio, flash, tour, and aftercare tags. Without it, the site still updates on the ~3 minute cache (or after redeploy).
+
+7. **Postgres (existing deployments):** if `flash_claims` was created with a foreign key to `flash_pieces`, drop that constraint once so holds can reference Sanity-only slugs (constraint name varies — check your DB or a recent `drizzle-kit` migration).
 
 ### Mari’s workflow (ongoing)
 
 1. Open the hosted Studio URL from step 5 (or from **Studios** in manage).  
-2. Create **Portfolio piece** documents: upload **Image**, fill **Alt text**, optional **Outbound link**, set **Order** (lower = earlier in the grid).  
+2. Create documents as needed: **Portfolio piece** (image + alt + order), **Flash piece** (image, price in cents, **URL slug** for `/flash/your-slug`, availability), **Guest spot (tour)** (city, dates, optional booking link), **Aftercare page** (keep a **single** published doc for live copy).  
 3. **Publish** each document. The live site shows **published** content only.
 
 **Local Studio** (optional, for you): `npm run sanity:dev` with the same env vars.

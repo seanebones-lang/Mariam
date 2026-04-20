@@ -20,6 +20,16 @@ export async function POST(req: Request) {
   if (token !== secret) {
     return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
   }
-  revalidateTag("portfolio", "default");
-  return NextResponse.json({ ok: true, revalidated: "portfolio" });
+  for (const tag of [
+    "portfolio",
+    "flash",
+    "tour",
+    "aftercare",
+  ] as const) {
+    revalidateTag(tag, "default");
+  }
+  return NextResponse.json({
+    ok: true,
+    revalidated: ["portfolio", "flash", "tour", "aftercare"],
+  });
 }

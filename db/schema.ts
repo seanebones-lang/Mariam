@@ -38,9 +38,8 @@ export const flashPieces = pgTable("flash_pieces", {
 
 export const flashClaims = pgTable("flash_claims", {
   id: text("id").primaryKey(),
-  flashPieceId: text("flash_piece_id")
-    .notNull()
-    .references(() => flashPieces.id),
+  /** Postgres flash id or Sanity flash slug (`slug.current`). */
+  flashPieceId: text("flash_piece_id").notNull(),
   clientEmail: text("client_email").notNull(),
   clientName: text("client_name").notNull(),
   status: text("status").notNull().default("hold"), // hold | paid | expired | released

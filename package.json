@@ -42,6 +42,7 @@
     "react-square-web-payments-sdk": "^3.3.0",
     "resend": "^6.6.0",
     "square": "^43.2.1",
+    "styled-components": "^6.4.0",
     "tailwind-merge": "^3.4.0",
     "three": "^0.182.0",
     "zod": "^4.3.5"
