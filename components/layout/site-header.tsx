@@ -5,11 +5,16 @@ import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { BOOKING_URL } from "@/lib/booking-url";
 
-const links = [
+const links: {
+  href: string;
+  label: string;
+  external?: boolean;
+}[] = [
   { href: "/portfolio", label: "Work" },
   { href: "/flash", label: "Flash" },
-  { href: "/book", label: "Book" },
+  { href: BOOKING_URL, label: "Book", external: true },
   { href: "/aftercare", label: "Aftercare" },
   { href: "/gift-cards", label: "Gift cards" },
   { href: "/tour", label: "Tour" },
@@ -17,7 +22,8 @@ const links = [
   { href: "/faq", label: "FAQ" },
 ];
 
-function isActive(pathname: string, href: string) {
+function isActive(pathname: string, href: string, external?: boolean) {
+  if (external) return false;
   if (href === "/") return pathname === "/";
   return pathname === href || pathname.startsWith(`${href}/`);
 }
@@ -53,6 +59,18 @@ export function SiteHeader() {
 
   const close = () => setOpen(false);
 
+  const navLinkClass = (active: boolean) =>
+    cn(
+      "relative px-3 py-2 text-[11px] font-medium uppercase tracking-widest transition-colors",
+      active ? "text-bandage" : "text-bone/70 hover:text-blood"
+    );
+
+  const mobileLinkClass = (active: boolean) =>
+    cn(
+      "flex items-center justify-between px-6 py-5 font-serif text-2xl transition-colors",
+      active ? "bg-blood/10 text-blood" : "text-bandage hover:text-blood"
+    );
+
   return (
     <>
       <header className="sticky top-0 z-40 border-b border-bone/10 bg-ink/80 backdrop-blur-md">
@@ -64,20 +82,31 @@ export function SiteHeader() {
           >
             Mari Belle Bones
           </Link>
-          <nav className="hidden items-center gap-1 md:flex" aria-label="Primary">
+          <nav
+            className="hidden items-center gap-1 md:flex"
+            aria-label="Primary"
+          >
             {links.map((l) => {
-              const active = isActive(pathname, l.href);
+              const active = isActive(pathname, l.href, l.external);
+              if (l.external) {
+                return (
+                  <a
+                    key={l.label}
+                    href={l.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-2 text-[11px] font-medium uppercase tracking-widest text-bone/70 transition-colors hover:text-blood"
+                  >
+                    {l.label}
+                  </a>
+                );
+              }
               return (
                 <Link
                   key={l.href}
                   href={l.href}
                   aria-current={active ? "page" : undefined}
-                  className={cn(
-                    "relative px-3 py-2 text-[11px] font-medium uppercase tracking-widest transition-colors",
-                    active
-                      ? "text-bandage"
-                      : "text-bone/70 hover:text-blood"
-                  )}
+                  className={navLinkClass(active)}
                 >
                   {l.label}
                   {active ? (
@@ -130,19 +159,28 @@ export function SiteHeader() {
             aria-label="Mobile primary"
           >
             {links.map((l) => {
-              const active = isActive(pathname, l.href);
+              const active = isActive(pathname, l.href, l.external);
+              if (l.external) {
+                return (
+                  <a
+                    key={l.label}
+                    href={l.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={close}
+                    className="px-6 py-5 font-serif text-2xl text-bandage hover:text-blood"
+                  >
+                    {l.label}
+                  </a>
+                );
+              }
               return (
                 <Link
                   key={l.href}
                   href={l.href}
                   onClick={close}
                   aria-current={active ? "page" : undefined}
-                  className={cn(
-                    "flex items-center justify-between px-6 py-5 font-serif text-2xl transition-colors",
-                    active
-                      ? "bg-blood/10 text-blood"
-                      : "text-bandage hover:text-blood"
-                  )}
+                  className={mobileLinkClass(active)}
                 >
                   <span>{l.label}</span>
                   {active ? (

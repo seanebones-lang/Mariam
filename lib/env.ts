@@ -25,6 +25,7 @@ const serverSchema = z.object({
 
 const clientSchema = z.object({
   NEXT_PUBLIC_APP_URL: z.string().url().optional(),
+  NEXT_PUBLIC_BOOKING_URL: z.string().url().optional(),
   NEXT_PUBLIC_SQUARE_APPLICATION_ID: z.string().optional(),
   NEXT_PUBLIC_SQUARE_LOCATION_ID: z.string().optional(),
 });
@@ -55,6 +56,7 @@ export function getServerEnv() {
 export function getClientEnv() {
   return clientSchema.parse({
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+    NEXT_PUBLIC_BOOKING_URL: process.env.NEXT_PUBLIC_BOOKING_URL,
     NEXT_PUBLIC_SQUARE_APPLICATION_ID:
       process.env.NEXT_PUBLIC_SQUARE_APPLICATION_ID,
     NEXT_PUBLIC_SQUARE_LOCATION_ID:

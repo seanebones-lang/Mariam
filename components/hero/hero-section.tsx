@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { BOOKING_URL } from "@/lib/booking-url";
 
 const HeroScene = dynamic(
   () => import("./hero-scene").then((m) => m.HeroScene),
@@ -52,15 +53,17 @@ export function HeroSection() {
           </p>
 
           <div className="mt-8 flex w-full flex-col items-stretch gap-3 sm:mt-10 sm:w-auto sm:flex-row sm:items-center sm:justify-center">
-            <Link
-              href="/book"
+            <a
+              href={BOOKING_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className={cn(
                 buttonVariants(),
                 "h-12 w-full sm:h-11 sm:w-auto sm:min-w-[180px]"
               )}
             >
               Book + deposit
-            </Link>
+            </a>
             <Link
               href="/portfolio"
               className={cn(

@@ -2,6 +2,7 @@ import { createXai } from "@ai-sdk/xai";
 import { stepCountIs, streamText, tool } from "ai";
 import { z } from "zod";
 import { getServerEnv } from "@/lib/env";
+import { BOOKING_URL } from "@/lib/booking-url";
 import { limitChat } from "@/lib/rate-limit";
 
 export const maxDuration = 60;
@@ -77,15 +78,16 @@ export async function POST(req: Request) {
 
   const startBookingFlow = tool({
     description:
-      "Tell the user to open the booking page to complete intake, upload references, and pay the deposit via Square.",
+      "Tell the user to open the live booking page (PrimeCraft) to pick a time, complete intake, and pay deposit when the studio requires it.",
     inputSchema: z.object({
       kind: z.enum(["consultation", "tattoo"]),
     }),
     execute: async ({ kind }) => ({
       ok: true as const,
-      url: `/book?kind=${kind}`,
+      url: BOOKING_URL,
+      kind,
       message:
-        "Open the booking flow to pick a slot, sign consent, and pay the deposit.",
+        "Open the booking link to continue — choose consultation or tattoo in the flow as offered.",
     }),
   });
 
@@ -156,9 +158,9 @@ export async function POST(req: Request) {
     system: `You are the voice and chat concierge for Mari Belle Bones (MBB), a dark-art / occult tattoo artist.
 Brand colors are strictly black, red, and white — keep prose elegant, slightly theatrical, never cheesy horror clichés.
 You help with: booking consultations or tattoo sessions, explaining deposits via Square, Saniderm aftercare, flash claims, gift cards, and tour / guest spots.
-Never invent policies you are unsure of — offer to send them to /faq or /book.
+Never invent policies you are unsure of — offer to send them to /faq or the live booking link.
 If asked for medical advice beyond standard tattoo aftercare, say you are not a medical professional.
-When a user wants to book, prefer the startBookingFlow tool and give them the URL path /book?kind=...
+When a user wants to book, prefer the startBookingFlow tool and give them the full booking URL (PrimeCraft).
 Keep answers concise unless the user asks for detail.`,
     messages: parsed.data.messages,
     tools: {

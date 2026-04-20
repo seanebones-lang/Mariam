@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { getInstagramFeed } from "@/lib/instagram";
 import { portfolioTiles } from "@/lib/portfolio-tiles";
 import { getTourPreview, getFlashPreview } from "@/lib/site-data";
+import { BOOKING_URL } from "@/lib/booking-url";
 
 export default async function HomePage() {
   const [ig, tours, flash] = await Promise.all([
@@ -187,15 +188,17 @@ export default async function HomePage() {
             Consultation or full session — intake, references, digital consent,
             and Square deposit in one flow.
           </p>
-          <Link
-            href="/book"
+          <a
+            href={BOOKING_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className={cn(
               buttonVariants({ size: "lg" }),
               "mt-8 inline-flex w-full sm:mt-10 sm:w-auto"
             )}
           >
             Begin booking
-          </Link>
+          </a>
         </div>
       </section>
     </>

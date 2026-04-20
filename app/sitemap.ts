@@ -6,7 +6,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const root = base.replace(/\/$/, "");
   const paths = [
     "",
-    "/book",
     "/flash",
     "/portfolio",
     "/aftercare",
