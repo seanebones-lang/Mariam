@@ -28,8 +28,8 @@ export default async function FlashPage() {
             Sold out
           </p>
           <p className="mt-3 text-sm leading-relaxed text-bone/80">
-            Every current piece has been claimed. New flash drops monthly —
-            request a slot for custom work in the meantime.
+            Listed designs are fully booked. New flash is added regularly—book
+            a custom consultation in the meantime.
           </p>
           <Link
             href="/book"

@@ -16,13 +16,13 @@ const FALLBACK: Tile[] = [
     id: "1",
     url: "https://images.unsplash.com/photo-1598371835526-4c06a5f7cde3?w=600&q=80",
     href: "/portfolio",
-    alt: "Dark blackwork tattoo on forearm",
+    alt: "Blackwork tattoo on forearm",
   },
   {
     id: "2",
     url: "https://images.unsplash.com/photo-1565058379802-bb39b142aede?w=600&q=80",
     href: "/portfolio",
-    alt: "Fine-line dark art tattoo",
+    alt: "Fine-line illustrative tattoo",
   },
   {
     id: "3",
@@ -34,7 +34,7 @@ const FALLBACK: Tile[] = [
     id: "4",
     url: "https://images.unsplash.com/photo-1590246814883-57c511a8e326?w=600&q=80",
     href: "/portfolio",
-    alt: "Dark illustrative tattoo",
+    alt: "Illustrative black and grey tattoo",
   },
   {
     id: "5",
@@ -46,19 +46,19 @@ const FALLBACK: Tile[] = [
     id: "6",
     url: "https://images.unsplash.com/photo-1618172193762-c511deb4e414?w=600&q=80",
     href: "/portfolio",
-    alt: "Moody portrait tattoo",
+    alt: "Portrait tattoo in black and grey",
   },
   {
     id: "7",
     url: "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=600&q=80",
     href: "/portfolio",
-    alt: "Fine-line dark tattoo",
+    alt: "Fine-line botanical tattoo",
   },
   {
     id: "8",
     url: "https://images.unsplash.com/photo-1618172193622-afc2d1d7f4aa?w=600&q=80",
     href: "/portfolio",
-    alt: "Dark art blackwork tattoo",
+    alt: "Blackwork sleeve detail",
   },
 ];
 

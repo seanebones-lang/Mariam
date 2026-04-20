@@ -24,8 +24,8 @@ export function SiteFooter() {
             Mari Belle Bones
           </p>
           <p className="mt-3 max-w-xs text-[13px] leading-relaxed text-muted sm:text-sm">
-            Dark art, drawn by hand. Private NYC studio + traveling guest
-            spots. By appointment only.
+            Internationally published, award-winning tattoo artist. Private
+            studio in Ruidoso, New Mexico, plus guest spots—by appointment.
           </p>
           <a
             href="https://www.instagram.com/maribellebones/"
@@ -70,7 +70,7 @@ export function SiteFooter() {
             Where
           </p>
           <p className="mt-4 text-sm leading-relaxed text-bone/80">
-            New York City
+            Ruidoso, New Mexico
             <br />
             Private studio
             <br />
@@ -81,7 +81,7 @@ export function SiteFooter() {
         </div>
       </div>
       <p className="mt-12 px-5 text-center text-[11px] text-muted sm:px-6 sm:text-xs">
-        © {new Date().getFullYear()} Mari Belle Bones. All rites reserved.
+        © {new Date().getFullYear()} Mari Belle Bones. All rights reserved.
       </p>
     </footer>
   );

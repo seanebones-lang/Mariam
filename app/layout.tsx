@@ -32,14 +32,15 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"
   ),
   title: {
-    default: "Mari Belle Bones | MBB — Dark art tattoo",
+    default: "Mari Belle Bones | Fine art tattoo — Ruidoso, NM",
     template: "%s | Mari Belle Bones",
   },
   description:
-    "Mari Belle Bones — dark art tattoo. Book consultations and sessions with Square deposit. Saniderm aftercare, flash, tour dates, gift cards.",
+    "Internationally published, award-winning tattoo artist. Home base Ruidoso, New Mexico—private studio, guest spots, and online booking with secure deposit. Aftercare, flash, gift cards, and travel dates.",
   openGraph: {
     title: "Mari Belle Bones | MBB",
-    description: "Dark art. Ritual ink. Book + deposit on-site.",
+    description:
+      "Custom tattooing by appointment. Book consultations and sessions with secure deposit.",
     type: "website",
   },
   formatDetection: {

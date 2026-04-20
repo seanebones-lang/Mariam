@@ -12,7 +12,8 @@ export default function NotFound() {
         404
       </h1>
       <p className="mt-6 text-sm leading-relaxed text-bone/80">
-        That page is past the veil. The link may have moved, or it never was.
+        That page does not exist or the link may have changed. Try home or the
+        portfolio below.
       </p>
       <div className="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
         <Link

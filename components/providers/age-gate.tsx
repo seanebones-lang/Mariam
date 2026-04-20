@@ -42,7 +42,7 @@ export function AgeGate() {
     >
       <div className="w-full max-w-md border border-blood/40 bg-char p-6 text-center shadow-[0_0_60px_rgba(163,18,31,0.15)] sm:p-8">
         <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-blood sm:text-xs sm:tracking-[0.4em]">
-          Threshold
+          Age verification
         </p>
         <p
           id="age-title"

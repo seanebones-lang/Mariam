@@ -22,16 +22,16 @@ export function HeroSection() {
 
       <div className="relative z-10 mx-auto grid min-h-[100svh] max-w-6xl grid-rows-[auto_1fr_auto] px-5 pt-20 pb-10 sm:px-6 sm:pt-24 md:pt-28 md:pb-16">
         <div className="flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.35em] text-bone/55 sm:text-[10px] sm:tracking-[0.4em]">
-          <span>NYC · Traveling</span>
+          <span>Ruidoso, NM · Traveling</span>
           <span className="hidden md:inline">
             Private studio · By appointment
           </span>
-          <span>Est. MMIV</span>
+          <span>Since 2004</span>
         </div>
 
         <div className="flex flex-col items-center justify-center text-center">
           <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-blood sm:tracking-[0.5em]">
-            The artist
+            Tattoo artist
           </p>
 
           <h1
@@ -44,12 +44,12 @@ export function HeroSection() {
           <div className="mt-6 h-px w-16 bg-bone/25 sm:w-24" />
 
           <p className="mt-6 font-serif text-base italic text-bone/70 sm:text-lg md:text-xl">
-            Ritual ink, drawn by hand.
+            Custom work, drawn by hand.
           </p>
 
           <p className="mt-5 max-w-sm px-2 text-[13px] leading-relaxed text-bone/65 sm:mt-7 sm:max-w-md sm:text-sm">
-            Custom dark work and flash by appointment. Deposits secured through
-            Square. Saniderm aftercare included.
+            Fine-line, blackwork, and flash—by appointment in a private studio.
+            Deposits secured through Square. Aftercare guidance included.
           </p>
 
           <div className="mt-8 flex w-full flex-col items-stretch gap-3 sm:mt-10 sm:w-auto sm:flex-row sm:items-center sm:justify-center">
@@ -62,7 +62,7 @@ export function HeroSection() {
                 "h-12 w-full sm:h-11 sm:w-auto sm:min-w-[180px]"
               )}
             >
-              Book + deposit
+              {"Book & deposit"}
             </a>
             <Link
               href="/portfolio"
@@ -79,9 +79,9 @@ export function HeroSection() {
         <div className="mt-8 flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.35em] text-bone/45 sm:text-[10px] sm:tracking-[0.4em]">
           <span>Scroll</span>
           <span className="hidden md:inline">
-            A single vessel, one session at a time
+            One client, one focused session
           </span>
-          <span>01 / IV</span>
+          <span>Est. 2004</span>
         </div>
       </div>
     </section>

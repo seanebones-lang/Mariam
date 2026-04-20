@@ -13,7 +13,7 @@ export default function GlobalError({
   return (
     <div className="mx-auto flex min-h-[60vh] max-w-xl flex-col items-center justify-center px-5 py-16 text-center sm:px-6">
       <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-blood sm:text-xs">
-        Something cracked
+        Error
       </p>
       <h1 className="mt-4 font-serif text-3xl leading-tight text-bandage sm:text-4xl">
         We hit a snag

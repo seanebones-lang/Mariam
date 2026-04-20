@@ -27,11 +27,11 @@ const getSanityTourCached = unstable_cache(
 const FALLBACK_FLASH: FlashPreview[] = [
   {
     id: "seed-moth",
-    title: "Moth sigil",
+    title: "Moth study",
     priceCents: 22000,
     imageUrl:
       "https://images.unsplash.com/photo-1611501275019-9b360cda3208?w=800&q=80",
-    description: "Blackwork moth with ritual geometry.",
+    description: "Blackwork moth with ornamental geometry.",
   },
   {
     id: "seed-serpent",
@@ -43,11 +43,11 @@ const FALLBACK_FLASH: FlashPreview[] = [
   },
   {
     id: "seed-rose",
-    title: "Bleeding rose",
+    title: "Rose study",
     priceCents: 18000,
     imageUrl:
       "https://images.unsplash.com/photo-1568515387636-8de82a5e8dbc?w=800&q=80",
-    description: "Neo-occult rose, crimson accent allowed in tattoo ink only.",
+    description: "Illustrative rose; accent tones per ink palette at session.",
   },
 ];
 

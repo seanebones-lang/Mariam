@@ -16,7 +16,7 @@ export type AftercarePageContent = {
 
 export const DEFAULT_AFTERCARE: AftercarePageContent = {
   kicker: "Healing",
-  headline: "Saniderm aftercare",
+  headline: "Aftercare with Saniderm",
   intro:
     "Saniderm (or similar transparent film) keeps a fresh tattoo sealed from friction and airborne grit while still allowing oxygen exchange. Follow your artist's specific instructions first — this page is a general guide only.",
   bullets: [

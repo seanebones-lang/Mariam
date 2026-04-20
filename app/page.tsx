@@ -24,7 +24,7 @@ export default async function HomePage() {
             Flash
           </p>
           <h2 className="mt-3 font-serif text-3xl leading-tight text-bandage sm:text-4xl md:text-5xl">
-            Artist&apos;s Choice
+            Flash collection
           </h2>
           <div className="mt-8 grid gap-4 sm:mt-10 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
             {flash.map((f) => (
@@ -75,8 +75,8 @@ export default async function HomePage() {
           <p className="mt-4 max-w-xl text-[13px] leading-relaxed text-bone/70 sm:text-sm">
             {uiNote === null ? (
               <>
-                Curated in Sanity — Mari updates this grid anytime without a
-                deploy. Still on{" "}
+                This grid is updated in Sanity Studio—no code deploy required.
+                Day-to-day work on{" "}
                 <a
                   href="https://www.instagram.com/maribellebones/"
                   target="_blank"
@@ -84,8 +84,8 @@ export default async function HomePage() {
                   className="text-blood hover:underline"
                 >
                   @maribellebones
-                </a>{" "}
-                for day-to-day drops.
+                </a>
+                .
               </>
             ) : uiNote === "sanity_unconfigured" ? (
               <>
@@ -148,12 +148,13 @@ export default async function HomePage() {
             Tour
           </p>
           <h2 className="mt-3 font-serif text-3xl leading-tight text-bandage sm:text-4xl md:text-5xl">
-            Guest rites
+            Guest spots
           </h2>
           <ul className="mt-8 space-y-3 sm:space-y-4">
             {tours.length === 0 ? (
               <li className="text-sm text-muted">
-                Tour dates appear here once added in admin or database.
+                Travel dates appear here when added in Sanity or the studio
+                admin.
               </li>
             ) : (
               tours.map((t) => (
@@ -191,7 +192,7 @@ export default async function HomePage() {
               href="/tour"
               className={cn(buttonVariants(), "w-full sm:w-auto")}
             >
-              Tour + booking links
+              {"Travel & booking"}
             </Link>
           </div>
         </div>

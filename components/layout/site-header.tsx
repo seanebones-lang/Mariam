@@ -196,7 +196,7 @@ export function SiteHeader() {
             })}
           </nav>
           <div className="mt-auto border-t border-bone/10 px-6 py-6 font-mono text-[10px] uppercase tracking-[0.4em] text-bone/55">
-            <p>NYC · Traveling</p>
+            <p>Ruidoso, NM · Traveling</p>
             <p className="mt-1 text-blood">By appointment only</p>
           </div>
         </div>

@@ -1,0 +1,406 @@
+[
+  {
+    "fields": [
+      {
+        "name": "title",
+        "type": "string",
+        "title": "Title (optional, for studio list)"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "image",
+        "type": "image"
+      },
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              },
+              {
+                "flag": "min",
+                "constraint": 10
+              },
+              {
+                "flag": "max",
+                "constraint": 200
+              }
+            ]
+          }
+        ],
+        "description": "Describe the piece for screen readers and SEO.",
+        "name": "alt",
+        "type": "string",
+        "title": "Alt text"
+      },
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "description": "Instagram post, press, etc. Opens in a new tab.",
+        "name": "linkUrl",
+        "type": "url",
+        "title": "Outbound link (optional)"
+      },
+      {
+        "initialValue": 0,
+        "description": "Lower numbers appear first.",
+        "name": "sortOrder",
+        "type": "number",
+        "title": "Order"
+      }
+    ],
+    "name": "portfolioPiece",
+    "type": "document",
+    "title": "Portfolio piece"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "title",
+        "type": "string"
+      },
+      {
+        "options": {
+          "source": "title",
+          "maxLength": 96
+        },
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "description": "Used in the shop link /flash/your-slug — keep it short, unique, lowercase.",
+        "name": "slug",
+        "type": "slug",
+        "title": "URL slug"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "image",
+        "type": "image"
+      },
+      {
+        "rows": 4,
+        "name": "description",
+        "type": "text"
+      },
+      {
+        "initialValue": 20000,
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              },
+              {
+                "flag": "min",
+                "constraint": 0
+              }
+            ]
+          }
+        ],
+        "description": "e.g. 22000 = $220.00 before deposit.",
+        "name": "priceCents",
+        "type": "number",
+        "title": "Price (cents)"
+      },
+      {
+        "initialValue": true,
+        "name": "available",
+        "type": "boolean",
+        "title": "Available to claim"
+      },
+      {
+        "initialValue": 0,
+        "description": "Lower numbers appear first in lists.",
+        "name": "sortOrder",
+        "type": "number",
+        "title": "Order"
+      }
+    ],
+    "name": "flashPiece",
+    "type": "document",
+    "title": "Flash piece"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "city",
+        "type": "string"
+      },
+      {
+        "name": "venue",
+        "type": "string",
+        "title": "Venue / studio"
+      },
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "startsOn",
+        "type": "datetime",
+        "title": "Starts on"
+      },
+      {
+        "name": "endsOn",
+        "type": "datetime",
+        "title": "Ends on (optional)"
+      },
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "description": "Guest spot booking URL (opens in a new tab).",
+        "name": "bookingUrl",
+        "type": "url",
+        "title": "Booking link"
+      },
+      {
+        "rows": 2,
+        "name": "notes",
+        "type": "text",
+        "title": "Internal notes"
+      },
+      {
+        "initialValue": 0,
+        "name": "sortOrder",
+        "type": "number",
+        "title": "Order"
+      }
+    ],
+    "name": "tourStop",
+    "type": "document",
+    "title": "Guest spot (tour)"
+  },
+  {
+    "description": "Create a single published document to replace the default aftercare copy on the site.",
+    "fields": [
+      {
+        "initialValue": "Healing",
+        "name": "kicker",
+        "type": "string",
+        "title": "Eyebrow label"
+      },
+      {
+        "initialValue": "Saniderm aftercare",
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "headline",
+        "type": "string"
+      },
+      {
+        "rows": 5,
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "intro",
+        "type": "text",
+        "title": "Intro paragraph"
+      },
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              },
+              {
+                "flag": "min",
+                "constraint": 1
+              }
+            ]
+          }
+        ],
+        "of": [
+          {
+            "type": "string"
+          }
+        ],
+        "name": "bullets",
+        "type": "array",
+        "title": "Care tips (bullets)"
+      },
+      {
+        "initialValue": "Email timeline",
+        "name": "emailSectionTitle",
+        "type": "string",
+        "title": "Email section title"
+      },
+      {
+        "rows": 3,
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "emailSectionIntro",
+        "type": "text",
+        "title": "Email section intro"
+      },
+      {
+        "rows": 2,
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "disclaimer",
+        "type": "text"
+      },
+      {
+        "initialValue": "Studio policies",
+        "name": "policiesLinkLabel",
+        "type": "string",
+        "title": "Footer link label"
+      },
+      {
+        "initialValue": "/faq",
+        "description": "Path or full URL, e.g. /faq",
+        "name": "policiesHref",
+        "type": "string",
+        "title": "Footer link URL"
+      }
+    ],
+    "name": "aftercarePage",
+    "type": "document",
+    "title": "Aftercare page"
+  }
+]

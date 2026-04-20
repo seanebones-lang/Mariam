@@ -13,8 +13,8 @@ export default function GiftCardsPage() {
         Gift cards
       </h1>
       <p className="mt-4 max-w-2xl text-sm leading-relaxed text-bone/80">
-        A studio credit, sent by email — for the friend who&apos;s been
-        circling a piece for years.
+        A studio credit sent by email—ideal for someone planning their first or
+        next appointment.
       </p>
 
       <ul className="mt-8 grid gap-3 text-sm leading-relaxed text-bone/85 sm:gap-4">

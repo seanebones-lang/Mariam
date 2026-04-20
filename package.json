@@ -17,7 +17,7 @@
   "dependencies": {
     "@ai-sdk/xai": "^2.0.0",
     "@hookform/resolvers": "^5.2.2",
-    "@neondatabase/serverless": "^1.0.2",
+    "pg": "^8.14.1",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
     "@sanity/client": "^7.21.0",
@@ -50,6 +50,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/pg": "^8.11.10",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/three": "^0.182.0",

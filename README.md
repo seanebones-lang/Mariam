@@ -1,13 +1,13 @@
 # Mari Belle Bones — MBB site
 
-Next.js 16 (App Router), React 19, Tailwind v4, Drizzle + Neon, Square (deposits / gift cards), xAI Grok + TTS concierge, **Sanity** portfolio CMS, Resend-ready aftercare cron.
+Next.js 16 (App Router), React 19, Tailwind v4, Drizzle + **Postgres** (e.g. **Railway**), Square (deposits / gift cards), xAI Grok + TTS concierge, **Sanity** CMS (portfolio, flash, tour, aftercare), Resend-ready aftercare cron.
 
 ## Local development
 
 ```bash
 npm install
 cp .env.example .env.local
-# Add XAI_API_KEY, DATABASE_URL (Neon), Square sandbox keys when ready
+# Add XAI_API_KEY, DATABASE_URL (Railway Postgres URL), Square sandbox keys when ready
 npm run dev
 ```
 
@@ -17,7 +17,7 @@ npm run dev
 ## Database
 
 ```bash
-npm run db:push   # push schema to Neon (requires DATABASE_URL)
+npm run db:push   # push schema to Postgres (requires DATABASE_URL)
 ```
 
 ## Sanity (portfolio, flash, tour, aftercare)
@@ -28,10 +28,10 @@ npm run db:push   # push schema to Neon (requires DATABASE_URL)
 |---------------|------------------|
 | **Portfolio piece** | Home + `/portfolio` grids |
 | **Flash piece** | `/flash` shop (image, price, slug URL). Claims/deposits still use Postgres; `flash_claims.flash_piece_id` may be a Sanity **slug** or a legacy DB id. |
-| **Guest spot (tour)** | Home tour strip + `/tour` (replaces Neon `tour_dates` when at least one published stop exists). |
+| **Guest spot (tour)** | Home tour strip + `/tour` (replaces DB `tour_dates` when at least one published stop exists). |
 | **Aftercare page** | `/aftercare` copy when **one** published document exists; otherwise the built-in default text is shown. |
 
-If Sanity has **no** tour rows, the app falls back to **Neon `tour_dates`** (and `/admin` can still add those). If Sanity has **no** flash pieces, the app falls back to **Neon `flash_pieces`** / demo seeds.
+If Sanity has **no** tour rows, the app falls back to **Postgres `tour_dates`** (and `/admin` can still add those). If Sanity has **no** flash pieces, the app falls back to **`flash_pieces`** / demo seeds.
 
 ### One-time setup (you or a dev)
 
@@ -78,4 +78,13 @@ If an API key was ever pasted in chat or committed by mistake, **rotate it immed
 
 ## Deploy
 
-Vercel: link repo, add environment variables from `.env.example`, connect Neon + Blob via Marketplace, set `CRON_SECRET`, point Square webhook URL to `https://<your-domain>/api/square/webhook` (must match the notification URL used for signature verification).
+Vercel: link repo, add environment variables from `.env.example`, set **`DATABASE_URL`** to your **Railway Postgres** connection string (public URL if the app runs on Vercel), set `CRON_SECRET`, optional Blob via Marketplace, point Square webhook URL to `https://<your-domain>/api/square/webhook` (must match the notification URL used for signature verification).
+
+### Postgres on Railway
+
+1. In [Railway](https://railway.app), create a **Postgres** plugin (or new project + Postgres).
+2. Open the service → **Variables** (or **Connect**) and copy **`DATABASE_URL`** (often includes `sslmode=require`).
+3. Paste into Vercel **Environment Variables** for Production (and Preview if needed), then redeploy.
+4. From this repo: `npm run db:push` with the same `DATABASE_URL` in `.env.local` to create tables.
+
+If Railway only exposes the DB on a private network, use Railway’s **public networking** / TCP proxy URL for Vercel, or run the Next app on Railway instead of Vercel.

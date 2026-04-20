@@ -17,7 +17,7 @@ export default defineType({
       name: "headline",
       title: "Headline",
       type: "string",
-      initialValue: "Saniderm aftercare",
+      initialValue: "Aftercare with Saniderm",
       validation: (Rule) => Rule.required(),
     }),
     defineField({

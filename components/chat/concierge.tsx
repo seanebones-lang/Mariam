@@ -13,13 +13,13 @@ const STORAGE_KEY = "mbb_concierge_v1";
 const GREETING: Msg = {
   role: "assistant",
   content:
-    "Welcome. I can check open slots, walk you through aftercare, rough-quote a piece, or hand you off to the booking flow. What can I help with?",
+    "Hello. I can help with availability, aftercare basics, a rough price range for a piece, or point you to the booking flow. What would you like to know?",
 };
 
 const SUGGESTIONS = [
-  "What's the next opening?",
-  "How does Saniderm aftercare work?",
-  "Quote a small blackwork piece on the forearm.",
+  "What openings do you see?",
+  "How should I care for a new tattoo in the first week?",
+  "Rough quote for a small blackwork piece on the forearm.",
 ];
 
 export function Concierge() {

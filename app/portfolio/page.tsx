@@ -19,7 +19,7 @@ export default async function PortfolioPage() {
       <p className="mt-4 max-w-2xl text-[13px] leading-relaxed text-bone/70 sm:text-sm">
         {uiNote === null ? (
           <>
-            Mari curates this grid in{" "}
+            This grid is edited in{" "}
             <a
               href="https://www.sanity.io/manage"
               target="_blank"
@@ -27,9 +27,9 @@ export default async function PortfolioPage() {
               className="text-blood hover:underline"
             >
               Sanity Studio
-            </a>{" "}
-            (hosted) — changes go live within a few minutes after you set up a
-            webhook, or on the next deploy. Day-to-day process on{" "}
+            </a>
+            —updates typically appear within a few minutes once a webhook is
+            configured, or after the next site deploy. Recent work on{" "}
             <a
               href="https://www.instagram.com/maribellebones/"
               target="_blank"
@@ -42,8 +42,8 @@ export default async function PortfolioPage() {
           </>
         ) : uiNote === "sanity_unconfigured" ? (
           <>
-            Sanity is not configured for this deployment — showing archive
-            highlights. Add{" "}
+            Sanity is not configured for this deployment—showing sample
+            images. Add{" "}
             <code className="text-blood">NEXT_PUBLIC_SANITY_PROJECT_ID</code>{" "}
             and run{" "}
             <code className="text-blood">npm run sanity:schemas</code> (see

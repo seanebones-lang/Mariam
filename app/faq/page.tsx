@@ -11,12 +11,12 @@ export default function FaqPage() {
       a: "Deposits hold calendar time and cover drawing prep — generally non-refundable. Exceptions for emergencies are at Mari’s discretion.",
     },
     {
-      q: "Saniderm vs dry heal?",
-      a: "Mari often recommends Saniderm for the first phase; follow the written aftercare you receive after the session.",
+      q: "Film dressing (Saniderm) vs dry healing?",
+      a: "Many clients use a transparent film dressing early in healing; Mari will recommend what suits your piece. Always follow the written aftercare you receive after your session.",
     },
     {
       q: "Do you tattoo minors?",
-      a: "No. This studio is eighteen plus only.",
+      a: "No. Services are for clients age eighteen and older only.",
     },
   ];
   return (
